@@ -1,0 +1,51 @@
+%&pdflatex
+\documentclass[conference]{IEEEtran}
+\usepackage{graphicx}
+\begin{document}
+\title{Forage RRT - An Efficient Approach To Task-Space Goal Planning for Redundant Manipulators}
+\maketitle
+\section{Introduction}
+One of the ultimate goals of motion planning algorithms for manipulators is to allow the manipulator to automatically find a collision-free
+path between any given start configuration and a goal point specified in end-effector space coordinates. The goal is ideally specified in
+end effector space coordinates because it is almost always the end effector which interacts with the object to be manipulated. The specific
+configuration of the other links of the manipulator is usually not important as long as it is not in collision with workspace obstacles.
+Examples of end effector tools which interact with objects include hands, magnets, suction cups, paint sprayers, and welders. Thus, any
+practical manipulator planner has to convert end-effector space goal coordinates to configuration space goal coordinates, i.e. the
+configuration of the manipulator which achieves the given end effector goal coordinate.
+
+In the literature, the two main approaches to solving this problem have been to either figure out the configuration-space goal coordinate
+directly using inverse kinematics or to incorporate the search for the configuration space goal coordinate into the planning. To date, we
+are not aware of any inverse kinematics algorithm for general n-link manipulators which is complete, fast, and returns a configuration
+guaranteed to be reachable from the start configuration. Incorporating inverse kinematics into the planning, especially when the planning
+algorithm is the Rapidly-Exploring Random Tree (RRT) alleviates all of these problems. However, this approach struggles to efficiently solve
+a certain class of problems, known as bug-trap problems, wherein the approach to the start or goal is largely occluded by an obstacle. If
+the configuration of the goal were known, this problem can be satisfactorily solved by the Bidirectional RRT. 
+
+In this paper, we present the Forage RRT which searches for the goal configuration as part of planning, making it complete, but also tackles
+bug trap type problems with relative ease. The result is a reliable planner which is fast and consistent at solving a wide range of
+manipulation problems in environments with obstacles. The main idea behind the approach is to initially explore the manipulator space
+quickly with a large step-size RRT and then attempt to connect to goal using a small step-size Jt-RRT from promising nodes in the large
+step-size RRT. We believe the ease of implementing this approach along with its excellent performance on all problems will allow it to be
+used as a general manipulation planner both in industry and academia.
+
+The layout of this paper will be to present previous work which we build upon as well as other approaches to the same problem, an analysis
+of the shortcoming of the RRT in bug trap problems, the implementation of the Forage-RRT algorithm, experiments and results compared to
+other planners having the same problem statement, and finally a discussion of possible improvement to the Forage RRT.   
+
+\section{Related Work}
+ 
+\section{RRT and the Bug-Trap Problem}
+
+\section{Forage RRT Implementation}
+
+\section{Experiments and Evaluation}
+
+\section{Discussion}
+
+\bibliographystyle{plain}
+\bibliography{RRT}
+\bibliography{MotionPlanning}
+\bibliography{IK}
+
+\end{document}
+
