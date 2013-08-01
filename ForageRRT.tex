@@ -65,6 +65,32 @@ to find solutions quickly in bug-trap problems.
  
 \section{RRT and the Bug-Trap Problem}
 
+\begin{figure}[h!]
+  \caption{An RRT attempting a bug trap problem.}
+  \centering
+    \includegraphics[width=0.5\textwidth]{bugTrapRRT}
+\end{figure}
+
+Figure ~\ref{fig:BugTrapRRT} shows an example of a single style RRT attempting to solve a problem where the goal is occluded by an object.
+The state of the RRT is shown after 12 iterations of the extend operation. In this case, the probability of taking a step to goal was about
+35\%. At this state we can see that two problems emerge in our quest to connect the tree to the goal node:
+\begin{enumerate}
+\item Future attempts to step to goal will be taken from the red node since it is closest. All these attempts will fail because there is an
+obstacle in the way. Obviously, these attempts are a waste of time.
+\item To actually get to the goal, the RRT will have to find its way into the yellow semicircle around the goal by virtue of only random
+steps. Any nodes outside of this area will be either further than the red node or obstructed by the obstacle. The probability of this
+happening quickly is very low. Essentially, it would require that random configurations to extend toward constantly be in the bottom right
+corner of the workspace. In this case, the probability of getting such random configurations looks to be around 1/15. In a different
+scenario with a larger workspace and smaller step size, this probability would be much smaller. 
+\end{enumerate}
+
+Some may argue that this problem occurs because the RRT is too greedy - that if the probability of stepping to goal was smaller, we would be
+able to avoid the obstacle. This is not really the case. We can practically throw out the probability that the RRT will reach the goal
+randomly, so we still need the tree to extend where a goal step would be useful. This is again a low probaility proposition if the goal is
+near the edge of the workspaceand occluded by an obstacle. Moreover, less greedy RRTs naturally take longer to converge to goal in simpler
+cases. In our opinion, the important takeaway is that fast RRTs generally tend to approach the goal in a very directed fashion.
+
+
 \section{Forage RRT Implementation}
 
 \section{Experiments and Evaluation}
