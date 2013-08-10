@@ -30,7 +30,13 @@ used as a general manipulation planner both in industry and academia.
 
 The layout of this paper will be to present previous work which we build upon as well as other approaches to the same problem, an analysis
 of the shortcoming of the RRT in bug trap problems, the implementation of the Forage-RRT algorithm, experiments and results compared to
-other planners having the same problem statement, and finally a discussion of possible improvement to the Forage RRT.   
+other planners having the same problem statement, and finally a discussion of possible improvement to the Forage RRT.  
+
+\section{Problem Statement}
+In this research, we are attempting to develop a motion planner for redundant manipulators which is complete, single-query, and reliably
+fast for all reasonable problems posed. The goal of the plan is expected to be specified as an end-effector configuration, either position
+only or position and rotation. The only assumptions are that the model of the manipulator is known (at least enough to calculate a
+Jacobian) and that the world can be queried to see if a given manipulator configuration would produce a collision or not.
 
 \section{Related Work}
 To date, no complete motion planning algorithms are tractible for high dimensional systems such as manipulators. However, over the last 30
@@ -53,15 +59,18 @@ Standard RRTs depend on a start and a goal given in configuration space. This al
 obstacle, by growing two trees - sometimes randomly, sometimes toward each other. Since goals are most often not specified in configuration
 space for manipulation problems, much research has dedicated to finding inverse kinematics algorithms to transform the goal into
 configuration space. Some of the most famous ones are given in \cite{goldenberg85}, \cite{guez88}, \cite{chang87}, \cite{parker89}. None of
-these algorithms are complete, guaranteed to be reachable from the start configuration, and fast. 
+these algorithms are complete and guaranteed to be reachable from the start configuration. \cite{ahuactzin99} presented an inverse
+kinematics approach that was guaranteed to return a configuration reachable from start. We compare the results of this algorithm to our own
+in Section ~\ref{sec:evaluation}. 
 
 The other approach to the inverse kinematics problem is to incorporate it into the planning search. This makes the inverse kinematics
 complete and guaranteed to be reachable. The first paper to use this approach was \cite{bertram06}, which biased the RRT search to be around
 the nodes already added which were closest in end-effector space to goal. \cite{vande07} achieved significant speed improvements in this
 approach by using the Jacobian transpose to take steps in the direction of the goal from the existing tree. This approach, however, is very
-susceptible to getting stuck when the goal is occluded by an obstacle. Finally, \cite{diankov08} improved on the idea by growing a second
-end-effector space tree from the goal and using this tree to bias the growth of the configuration-space tree. This approach too struggled
-to find solutions quickly in bug-trap problems.
+susceptible to getting stuck when the goal is occluded by an obstacle. Finally, \cite{diankov08} and \cite{yao05}  improved on the idea by
+growing a second end-effector space tree from and using this tree to bias the growth of the configuration-space tree. \cite{diankov08} grew
+the task space stree from the goal in a bidirectional type approach whereas \cite{yao05} made end effector paths from start to goal. This
+approach too struggles to find solutions quickly in bug-trap problems.
  
 \section{RRT and the Bug-Trap Problem}
 
@@ -94,6 +103,7 @@ cases. In our opinion, the important takeaway is that fast RRTs generally tend t
 \section{Forage RRT Implementation}
 
 \section{Experiments and Evaluation}
+\label{sec:evaluation}
 
 \section{Discussion}
 
