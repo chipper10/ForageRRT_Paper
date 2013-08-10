@@ -1,6 +1,7 @@
 %&pdflatex
 \documentclass[conference]{IEEEtran}
 \usepackage{graphicx}
+\usepackage{algorithm2e}
 \begin{document}
 \title{Forage RRT - An Efficient Approach To Task-Space Goal Planning for Redundant Manipulators}
 \maketitle
@@ -61,7 +62,7 @@ space for manipulation problems, much research has dedicated to finding inverse 
 configuration space. Some of the most famous ones are given in \cite{goldenberg85}, \cite{guez88}, \cite{chang87}, \cite{parker89}. None of
 these algorithms are complete and guaranteed to be reachable from the start configuration. \cite{ahuactzin99} presented an inverse
 kinematics approach that was guaranteed to return a configuration reachable from start. We compare the results of this algorithm to our own
-in Section ~\ref{sec:evaluation}. 
+in Section~\ref{sec:evaluation}. 
 
 The other approach to the inverse kinematics problem is to incorporate it into the planning search. This makes the inverse kinematics
 complete and guaranteed to be reachable. The first paper to use this approach was \cite{bertram06}, which biased the RRT search to be around
@@ -73,6 +74,7 @@ the task space stree from the goal in a bidirectional type approach whereas \cit
 approach too struggles to find solutions quickly in bug-trap problems.
  
 \section{RRT and the Bug-Trap Problem}
+\label{sec:bugtraprrt}
 
 \begin{figure}[h!]
   \centering
@@ -80,7 +82,7 @@ approach too struggles to find solutions quickly in bug-trap problems.
   \caption{An RRT attempting a bug trap problem. \label{fig:BugTrapRRT} }
 \end{figure}
 
-Figure ~\ref{fig:BugTrapRRT} shows an example of a single style RRT attempting to solve a problem where the goal is occluded by an object.
+Figure~\ref{fig:BugTrapRRT} shows an example of a single style RRT attempting to solve a problem where the goal is occluded by an object.
 The state of the RRT is shown after 12 iterations of the extend operation. In this case, the probability of taking a step to goal was about
 35\%. At this state we can see that two problems emerge in our quest to connect the tree to the goal node:
 \begin{enumerate}
@@ -99,8 +101,79 @@ randomly, so we still need the tree to extend where a goal step would be useful.
 near the edge of the workspaceand occluded by an obstacle. Moreover, less greedy RRTs naturally take longer to converge to goal in simpler
 cases. In our opinion, the important takeaway is that fast RRTs generally tend to approach the goal in a very directed fashion.
 
-
 \section{Forage RRT Implementation}
+The Forage RRT is based on a similar concept to the Ariadne's Clew Algorithm \cite{bessiere93} in that there are two repeating phases to the
+algorithm - explore and search. However, in the Forage RRT, the explore phase is the extension or a coarse step-size RRT and the search phase
+is an attempt to connect a node from the coarse step-size tree to the goal via a fine step-size RRT. The relationship to foraging is that
+there's a combination of exploring a large space to find leads and the closer investigation of these leads. The effect of this approach for
+bug-trap type problems is to solve the problem presented in Section~\ref{sec:bugtraprrt} by using the coarse step-size RRT to find
+promising approach directions to the goal and then using the fine step-size RRT to avoid any small occlusions that remain on the path to the
+goal.
+
+\subsection{Goal Heap}
+One of the inherent inefficiencies in the basic RRT algorithm is that unsuccessful steps to goal may continuously be taken from the same
+node because that node is the closest to goal. The problem is illustrated in Section~\ref{sec:bugtraprrt}, Figure~\ref{fig:BugTrapRRT},
+where steps to goal from the red node are doomed to fail indefinitely. In RRT implementations for static environments, it is unnecessary and
+inefficient to continue to attempt steps to goal from nodes from which such a step has already been attempted - if it did not reach goal
+before, it will not again. 
+
+Our solution to the problem is to implement a Goal Heap. When new nodes are added to the tree, they are also added to the goal heap along
+with their value. In our case, the value of a node was simply the inverse of its distance to goal. The heap data structure automatically
+orders the nodes by value so that the top of the heap is the highest value node. Once a step to goal is attempted from a node, that node is
+removed from the Goal Heap because using it again for a step to goal would be a fruitless endeavor.
+
+Although we recommend using a Goal Heap for any RRT implementation to improve efficiency, it is essential for the Forage RRT because it is
+used to decide which node in the coarse step-size RRT should be used to attempt a fine step-size RRT to connect to goal.
+
+\subsection{RRT Extend Implementation}
+For random extensions of the search tree, we use the standard extension procedure of picking a random point in configuration space and
+taking a step towards it from the nearest neighbor already in the tree. For extensions toward the goal, we use the Moore-Penrose
+pseudo-inverse Jacobian to take a step in the proper direction. Note that this is similar to the Jt-RRT presented in \cite{vande07} but we
+found that using the pseudo-inverse  instead of the transpose of the Jacobian was the more effective approach. The overall extend
+implementation is shown in Algorithm~\ref{alg:extend}
+\begin{algorithm}
+ \label{alg:extend}
+ \SetAlgoLined
+ \KwData{$RRT, goal, StepSize$}
+ \KwResult{$Updated RRT, StepResult$}
+ \eIf{$randomNumber(0,100) < randomExtendProbability$}{
+	$x_{randConfig} \leftarrow RANDOM\_STATE()$\;
+	$x_{near} \leftarrow NEAREST\_NEIGHBOR(randConfig, RRT)$\;
+	$x_{new} \leftarrow COMPUTE\_NEW\_STATE(x_{randConfig}, x_{near}, stepsize)$\;
+	\eIf{$isLegalState(x_{new})$}{
+		$RRT \leftarrow addVertex(x_{new})$\;
+		$RRT \leftarrow addEdge(x_{near}, x_{new}, StepSize)$\;
+		$NodeValue \leftarrow value(x_{new})$\;
+		$GoalHeap \leftarrow insert(x_{new}, NodeValue)$\;
+		\eIf{$x_{new} = x_{randomConfig}$}{
+			$return \; STEP\_REACHED$\;
+		}{
+			$return \; STEP\_PROGRESS$\;
+		}
+	}{
+		$return \; STEP\_COLLISION$\;
+	}	
+  }{	
+	$x_{near} \leftarrow GoalHeap \rightarrow top$\;
+	$x_{new} \leftarrow takeJacobianStep(x_{near}, goal, StepSize)$\;
+	\eIf{$isLegalState(x_{new})$}{
+		$RRT \leftarrow addVertex(x_{new})$\;
+                $RRT \leftarrow addEdge(x_{near}, x_{new}, StepSize)$\;
+		\eIf{$x_{new} = goal$}{
+                        $return \; GOAL\_REACHED$\;
+                }{
+			$NodeValue \leftarrow value(x_{new})$\;
+	                $GoalHeap \leftarrow insert(x_{new}, NodeValue)$\;
+			$GoalHeap \leftarrow remove(x_{near})$\;
+                        $return \; STEP\_PROGRESS$\;
+                }	
+	}{
+		$GoalHeap \leftarrow remove(x_{near})$\;
+		$return \; STEP\_COLLISION$\;
+	}
+ }
+\caption{RRT Extend Operation}
+\end{algorithm}
 
 \section{Experiments and Evaluation}
 \label{sec:evaluation}
