@@ -4,6 +4,14 @@
 \usepackage{algorithm2e}
 \begin{document}
 \title{Forage RRT - An Efficient Approach To Task-Space Goal Planning for Redundant Manipulators}
+\author{Patricio Vela\\ 
+	School of ECE\\
+	Georgia Institute of Technology\\
+	 pvela@ece.gatech.edu \and
+	Leo Keselman\\
+	School of ECE\\
+	 Georgia Institute of Technology\\
+	 L.D.Keselman@gmail.com}
 \maketitle
 \section{Introduction}
 One of the ultimate goals of motion planning algorithms for manipulators is to allow the manipulator to automatically find a collision-free
@@ -174,6 +182,51 @@ implementation is shown in Algorithm~\ref{alg:extend}
  }
 \caption{RRT Extend Operation}
 \end{algorithm}
+
+\subsection{Explore/Search}
+The main Forage RRT algorithm is shown in Algorithm~\ref{alg:ForageRRT}. The purpose of the first while loop is to effectively explore the
+space and build up several promising nodes to start the fine step-size RRT from. The second while loop attempts to connect the promising
+nodes from the coarse step-size RRT to the goal with a fine step-size RRT. Once a fine step-size RRT has endured a certain number of
+collisions, we give up on it and try to start another one from the next most promising node. Once a certain number of the fine step-size
+RRTs fail, we grow our coarse step-size RRT some more to replenish some promising start nodes. This constant giving up and restarting from
+promising nodes allows us to make the fine step-size RRT greedy, making it fast in easy situations but also robust to be able to handle
+harder situations. A full list of parameters we used is given in Section~\ref{sec:evaluation}.
+
+Note that once the fine step-size RRT has reached the goal, we can trace back from this node through its parents to the coarse step-size RRT
+node that created it and then continue tracing back to the root of the coarse step-size RRT to make our final plan. 
+
+Finally, it is important to note that because of the mixed step size RRTs, the raw final plan will not be attractive, especially near the
+start. For this purpose, smoothing is required to make the path acceptable. This is done in a quick manner by taking pairs of nodes,
+attempting to connect them with a straight line, and deleting all nodes in between if successful. We have found in this case that the
+best way to pick pairs of nodes to attempt to connect is by taking one from the coarse section and the other from the fine section.  The
+second step is to go through remaining coarse steps and subdivide them into the desired step size to match the rest of the path.
+Empirically, 15-20 pairs of attempted connections makes for a smooth path. 
+
+\begin{algorithm}
+ \label{alg:ForageRRT}
+ \SetAlgoLined
+ \KwData{start, goal}
+ \KwResult{path from start to goal}
+	$CoarseRRT \leftarrow INITIALIZE(largeStepSize, start, goal)$\;
+	\While{$CoarseRRT \rightarrow size < initialSize$}{
+		$CoarseRRT \rightarrow EXTEND()$\;
+	}
+	\While{$result \neq GOAL\_REACHED$}{
+		$FineRRT \leftarrow INITIALIZE(fineStepSize, CoarseRRT \rightarrow GoalHeap \rightarrow top)$\;
+		\While{$numCollisions < maxNumCollisions$}{
+			$FineRRT \rightarrow EXTEND()$\;
+		}
+		increment numFailures \;
+		\If{numFailures = maxNumFailures}{
+			\For{1:percentIncrease*initialSize}{
+				$CoarseRRT \rightarrow EXTEND()$\;
+			}
+		}
+	}
+\caption{Forage RRT}
+\end{algorithm}
+
+
 
 \section{Experiments and Evaluation}
 \label{sec:evaluation}
