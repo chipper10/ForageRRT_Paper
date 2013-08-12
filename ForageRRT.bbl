@@ -1,0 +1,105 @@
+\begin{thebibliography}{10}
+
+\bibitem{ahuactzin99}
+J~Manuel Ahuactzin and Kamal~K Gupta.
+\newblock The kinematic roadmap: A motion planning based global approach for
+  inverse kinematics of redundant robots.
+\newblock {\em Robotics and Automation, IEEE Transactions on}, 15(4):653--669,
+  1999.
+
+\bibitem{amato96}
+Nancy~M Amato and Yan Wu.
+\newblock A randomized roadmap method for path and manipulation planning.
+\newblock In {\em Robotics and Automation, 1996. Proceedings., 1996 IEEE
+  International Conference on}, volume~1, pages 113--120. IEEE, 1996.
+
+\bibitem{bertram06}
+Dominik Bertram, James Kuffner, Ruediger Dillmann, and Tamim Asfour.
+\newblock An integrated approach to inverse kinematics and path planning for
+  redundant manipulators.
+\newblock In {\em Robotics and Automation, 2006. ICRA 2006. Proceedings 2006
+  IEEE International Conference on}, pages 1874--1879. IEEE, 2006.
+
+\bibitem{bessiere93}
+Pierre Bessiere, J-M Ahuactzin, E-G Talbi, and Emmanuel Mazer.
+\newblock The “ariadne's clew” algorithm: global planning with local
+  methods.
+\newblock In {\em Intelligent Robots and Systems' 93, IROS'93. Proceedings of
+  the 1993 IEEE/RSJ International Conference on}, volume~2, pages 1373--1380.
+  IEEE, 1993.
+
+\bibitem{chang87}
+Pyung Chang.
+\newblock A closed-form solution for inverse kinematics of robot manipulators
+  with redundancy.
+\newblock {\em Robotics and Automation, IEEE Journal of}, 3(5):393--403, 1987.
+
+\bibitem{connolly90}
+Christopher~I Connolly, JB~Burns, and R~Weiss.
+\newblock Path planning using laplace's equation.
+\newblock In {\em Robotics and Automation, 1990. Proceedings., 1990 IEEE
+  International Conference on}, pages 2102--2106. IEEE, 1990.
+
+\bibitem{diankov08}
+Rosen Diankov, Nathan Ratliff, Dave Ferguson, Siddhartha Srinivasa, and James
+  Kuffner.
+\newblock Bispace planning: Concurrent multi-space exploration.
+\newblock {\em Proceedings of Robotics: Science and Systems IV}, 63, 2008.
+
+\bibitem{ge00}
+Shuzhi~Sam Ge and Yan~Juan Cui.
+\newblock New potential functions for mobile robot path planning.
+\newblock {\em Robotics and Automation, IEEE Transactions on}, 16(5):615--620,
+  2000.
+
+\bibitem{goldenberg85}
+Andrew Goldenberg, B~Benhabib, and Robert Fenton.
+\newblock A complete generalized solution to the inverse kinematics of robots.
+\newblock {\em Robotics and Automation, IEEE Journal of}, 1(1):14--20, 1985.
+
+\bibitem{guez88}
+Allon Guez and Ziauddin Ahmad.
+\newblock Solution to the inverse kinematics problem in robotics by neural
+  networks.
+\newblock In {\em Neural Networks, 1988., IEEE International Conference on},
+  pages 617--624. IEEE, 1988.
+
+\bibitem{khatib86}
+Oussama Khatib.
+\newblock Real-time obstacle avoidance for manipulators and mobile robots.
+\newblock {\em The international journal of robotics research}, 5(1):90--98,
+  1986.
+
+\bibitem{koren91}
+Yoram Koren and Johann Borenstein.
+\newblock Potential field methods and their inherent limitations for mobile
+  robot navigation.
+\newblock In {\em Robotics and Automation, 1991. Proceedings., 1991 IEEE
+  International Conference on}, pages 1398--1404. IEEE, 1991.
+
+\bibitem{lavalle00}
+Steven~M LaValle and James~J Kuffner~Jr.
+\newblock Rapidly-exploring random trees: Progress and prospects.
+\newblock 2000.
+
+\bibitem{parker89}
+Joey~K Parker, Ahmad~R Khoogar, and David~E Goldberg.
+\newblock Inverse kinematics of redundant robots using genetic algorithms.
+\newblock In {\em Robotics and Automation, 1989. Proceedings., 1989 IEEE
+  International Conference on}, pages 271--276. IEEE, 1989.
+
+\bibitem{vande07}
+M~Vande~Weghe, Dave Ferguson, and Siddhartha~S Srinivasa.
+\newblock Randomized path planning for redundant manipulators without inverse
+  kinematics.
+\newblock In {\em Humanoid Robots, 2007 7th IEEE-RAS International Conference
+  on}, pages 477--482. IEEE, 2007.
+
+\bibitem{yao05}
+Zhenwang Yao and Kamal Gupta.
+\newblock Path planning with general end-effector constraints: Using task space
+  to guide configuration space search.
+\newblock In {\em Intelligent Robots and Systems, 2005.(IROS 2005). 2005
+  IEEE/RSJ International Conference on}, pages 1875--1880. IEEE, 2005.
+
+\end{thebibliography}

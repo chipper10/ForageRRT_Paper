@@ -226,10 +226,86 @@ Empirically, 15-20 pairs of attempted connections makes for a smooth path.
 \caption{Forage RRT}
 \end{algorithm}
 
-
-
 \section{Experiments and Evaluation}
 \label{sec:evaluation}
+\subsection{Experiments}
+Experiments were conducted on a Schunk 7 DOF arm with the DART/GRIP simulator, developed by the GOLEMS lab at Georgia Tech. We compared the
+following algorithms to the smoothed Forage RRT:
+\begin{enumerate}
+	\item Jt-RRT \cite{vande07}
+	\item Moore-Penrose Pseudo-Inverse RRT: this is the same as Jt-RRT aside from using an Moore-Penrose pseudo-inverse Jacobian to take
+	      goal directed steps
+	\item BiSpace RRT \cite{diankov08}
+	\item Kinematic Roadmap \cite{ahuactzin99}: note that the paths produced from this algorithm would be too long to be used for most
+	      applications but rather only the inverse kinematics, which is guaranteed to be reachable from start would be used.
+\end{enumerate}
+
+It is worth noting that smoothing time was included in Forage RRT results but no other results because the paths produced did not strictly
+require it for those cases. Moreover, each algorithm was restarted after 10-20s of planning as done in \cite{diankov08} to reduce average
+planning time of all planners and eliminate the notion of failure. Thus, all runs produced a valid result.
+
+Each algorithm was tested on a hard case and and easy case. The easy case is shown in Figure~\ref{fig:EasyCase} and the hard case is showin
+in Figure~\ref{fig:HardCase}. In each figure, the goal is the point where the three shown faces of the cube meet. 50 random collision-free
+start positions were chosen for each algorithm and case and for each random start configuration, 40 runs were conducted. In total, each
+algorithm was tested for 2000 runs per case. 
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{figures/EasyCase.jpg}
+  \caption{Easy case for testing: no obstacles. \label{fig:EasyCase} }
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{figures/HardCase.jpg}
+  \caption{Hard case for testing: goal directly under obstacle, near edge of workspace. \label{fig:HardCase} }
+\end{figure}
+
+The Forage RRT parameters used for testing are given in Table~\ref{tab:ForageParams}
+
+\begin{table}
+	\centering
+	\begin{tabular}{| r | l | }
+        	\hline
+  		randomExtendProbability - coarse & 90 \\ \hline
+  		randomExtendProbability - fine & 65 \\ \hline
+  		largeStepSize & 1.3\\ \hline
+  		fineStepSize & .02\\ \hline
+  		maxNumCollisions & 5\\ \hline
+  		maxNumFailures & 10\\ \hline
+		percentIncrease & .25\\ \hline 
+	\end{tabular}
+	\caption{Forage RRT parameters.} 
+	\label{tab:ForageParams}
+\end{table}
+
+\subsection{Evaluation}
+For the purpose of visualization, the end effector positions of the coarse RRT are shown in in Figure~\ref{fig:CoarseRRT}. It's evident to
+see that the closest nodes to goal come from many different directions, making the fine RRTs more likely to be effective. The green node is
+the start and the red node is the goal.
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{figures/coarseRRTExample.jpg}
+  \caption{End effector positions for the initial coarse RRT. \label{fig:CoarseRRT} }
+\end{figure}
+
+The results of the simulation are shown in Table~\ref{tab:Results}.
+
+\begin{table}
+        \centering
+        \begin{tabular}{| c | c | c | c | c | }
+		\hline
+                \textbf{Algorithm} & \textbf{Easy Avg} & \textbf{Easy St Dev} & \textbf{Hard Avg} & \textbf{Hard St Dev}\\  \hline
+                Forage RRT& & & & \\ \hline
+                Jt-RRT& & & & \\ \hline
+                Jinv-RRT& & & & \\ \hline
+		BiSpace RRT& & & & \\ \hline
+   		Kinematic Roadmap& & & & \\ \hline
+        \end{tabular}
+        \caption{Experiment results. All times in seconds.}
+        \label{tab:ForageParams}
+\end{table}
 
 \section{Discussion}
 
