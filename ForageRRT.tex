@@ -110,6 +110,7 @@ near the edge of the workspaceand occluded by an obstacle. Moreover, less greedy
 cases. In our opinion, the important takeaway is that fast RRTs generally tend to approach the goal in a very directed fashion.
 
 \section{Forage RRT Implementation}
+\label{sec:implementation}
 The Forage RRT is based on a similar concept to the Ariadne's Clew Algorithm \cite{bessiere93} in that there are two repeating phases to the
 algorithm - explore and search. However, in the Forage RRT, the explore phase is the extension or a coarse step-size RRT and the search phase
 is an attempt to connect a node from the coarse step-size tree to the goal via a fine step-size RRT. The relationship to foraging is that
@@ -296,18 +297,42 @@ The results of the simulation are shown in Table~\ref{tab:Results}.
         \centering
         \begin{tabular}{| c | c | c | c | c | }
 		\hline
-                \textbf{Algorithm} & \textbf{Easy Avg} & \textbf{Easy St Dev} & \textbf{Hard Avg} & \textbf{Hard St Dev}\\  \hline
-                Forage RRT& & & & \\ \hline
-                Jt-RRT& & & & \\ \hline
-                Jinv-RRT& & & & \\ \hline
-		BiSpace RRT& & & & \\ \hline
-   		Kinematic Roadmap& & & & \\ \hline
+                Algorithm & \textbf{Easy Avg} & \textbf{Easy StDev} & \textbf{Hard Avg} & \textbf{Hard StDev}\\  \hline
+                \textbf{Forage RRT}& & & & \\ \hline
+                \textbf{Jt-RRT}& & & & \\ \hline
+                \textbf{Jinv-RRT}& & & & \\ \hline
+		\textbf{BiSpace RRT}& & & & \\ \hline
+   		\textbf{Kin. Roadmap}& & & & \\ \hline
         \end{tabular}
         \caption{Experiment results. All times in seconds.}
-        \label{tab:ForageParams}
+        \label{tab:Results}
 \end{table}
 
 \section{Discussion}
+\subsection{Completeness}
+As shown in \cite{lavalle00}, any RRT is complete because its coverage of the workspace converges to the sampling distribution. Because the
+coarse RRT in the Forage RRT algorithm searches indefinitely, the Forage RRT is also complete. Needless to say, it is highly unlikely in
+practice that the coarse RRT will be the one to come upon the goal.
+
+\subsection{Parameters}
+The Forage RRT parameters used to achieve the results in Table~\ref{tab:Results} are given in Table~\ref{tab:ForageParams}. These parameters
+were arrived at imperically and by no means are guaranteed to be ideal ones. It may be of interest to investigate ideal values for these
+parameters, for instance when to switch from fine searching to coarse searching. In theory, it could be based on some function instead of a
+hard number of failures. Moreover, parameters such as initial coarse tree size and coarse tree step size may be good candidates for learning
+over time. It is quite possible that the ideal values for these parameters depend on specific environment factors such as the volume of the
+workspace. The Forage RRT algorithm presented in Section~\ref{sec:implementation} should be a very strong base line for any motion planning
+environment, especially one for a manipulator, but improvements could foreseeably be made to make it more adaptible to any environment.
+
+\subsection{Replanning}
+In situations where the environment has changed but the start and goal have not, the Forage RRT lends itself to possible future work in
+replanning strategies. For instance, it may be faster to modify the parts of the coarse tree affected by the environment changes than to
+rebuild the whole tree. Another idea may be to reuse the coarse node which was a successful start for the fine RRT in the previous run as a
+waypoint in the search to bias the tree toward an area which is likely to be successful again.
+
+\section{Conclusion}
+We have presented the Forage RRT algorithm for motion planning. We believe the algorithm's efficieny on tough problems, consistency,
+completeness, ease of implementation, and potential for adaptibility make it the best available motion planning algorithm for general
+problems where the goal is specified in task space. We have shown its effectiveness specifically for redundant manipulators.
 
 \bibliographystyle{plain}
 \bibliography{RRT,MotionPlanning,IK}
