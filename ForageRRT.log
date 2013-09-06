@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.6.27)  28 AUG 2013 13:27
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.6.27)  6 SEP 2013 16:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -173,34 +173,57 @@ subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
 \c@algocf=\count95
 \algocf@algoframe=\box32
 \algocf@algobox=\box33
-) (./ForageRRT.aux)
+) (/usr/share/texlive/texmf-dist/tex/latex/subfigure/subfigure.sty
+Package: subfigure 2002/03/15 v2.1.5 subfigure package
+\subfigtopskip=\skip58
+\subfigcapskip=\skip59
+\subfigcaptopadj=\dimen125
+\subfigbottomskip=\skip60
+\subfigcapmargin=\dimen126
+\subfiglabelskip=\skip61
+\c@subfigure=\count96
+\c@lofdepth=\count97
+\c@subtable=\count98
+\c@lotdepth=\count99
+
+****************************************
+* Local config file subfigure.cfg used *
+****************************************
+(/usr/share/texlive/texmf-dist/tex/latex/subfigure/subfigure.cfg)
+\subfig@top=\skip62
+\subfig@bottom=\skip63
+)
+(./ForageRRT.aux
+
+LaTeX Warning: Label `tab:Results' multiply defined.
+
+)
 \openout1 = `ForageRRT.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-
-(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+ (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count96
-\scratchdimen=\dimen125
+\scratchcounter=\count100
+\scratchdimen=\dimen127
 \scratchbox=\box34
-\nofMPsegments=\count97
-\nofMParguments=\count98
+\nofMPsegments=\count101
+\nofMParguments=\count102
 \everyMPshowfont=\toks16
-\MPscratchCnt=\count99
-\MPscratchDim=\dimen126
-\MPnumerator=\count100
-\makeMPintoPDFobject=\count101
+\MPscratchCnt=\count103
+\MPscratchDim=\dimen128
+\MPnumerator=\count104
+\makeMPintoPDFobject=\count105
 \everyMPtoPDFconversion=\toks17
 ) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
@@ -258,10 +281,10 @@ e
 File: figures/bugTrapRRT.jpg Graphic file (type jpg)
 
 <use figures/bugTrapRRT.jpg>
-Package pdftex.def Info: figures/bugTrapRRT.jpg used on input line 91.
+Package pdftex.def Info: figures/bugTrapRRT.jpg used on input line 92.
 (pdftex.def)             Requested size: 258.0pt x 193.56647pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 91--92
+Overfull \hbox (6.0pt too wide) in paragraph at lines 92--93
  [][] 
  []
 
@@ -270,59 +293,79 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [2 <./figures/bugTrapRRT.jpg>]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 152.
+(Font)              <7> on input line 153.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 152.
+(Font)              <5> on input line 153.
 
-Overfull \hbox (39.72646pt too wide) in paragraph at lines 171--171
+Overfull \hbox (39.72646pt too wide) in paragraph at lines 172--172
 \OML/cmm/m/it/10 COMPUTE[]NEW[]STATE\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x[]; x[];
  stepsize\OT1/cmr/m/n/10 )$\OT1/ptm/m/n/10 ; 
  []
 
-[3] <figures/EasyCase.jpg, id=20, 637.38126pt x 475.7775pt>
+[3]
+Underfull \hbox (badness 2245) in paragraph at lines 252--255
+ \OT1/ptm/m/it/10 1) Se-quen-tial Im-ple-men-ta-tion: [][] \OT1/ptm/m/n/10 Ex-p
+er-i-ments were con-
+ []
+
+<figures/EasyCase.jpg, id=20, 637.38126pt x 475.7775pt>
 File: figures/EasyCase.jpg Graphic file (type jpg)
 
 <use figures/EasyCase.jpg>
-Package pdftex.def Info: figures/EasyCase.jpg used on input line 262.
-(pdftex.def)             Requested size: 258.0pt x 192.58719pt.
+Package pdftex.def Info: figures/EasyCase.jpg used on input line 276.
+(pdftex.def)             Requested size: 149.63654pt x 111.69156pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 262--263
- [][] 
+<figures/MediumCase.jpg, id=21, 551.05875pt x 428.60126pt>
+File: figures/MediumCase.jpg Graphic file (type jpg)
+
+<use figures/MediumCase.jpg>
+Package pdftex.def Info: figures/MediumCase.jpg used on input line 278.
+(pdftex.def)             Requested size: 149.63654pt x 116.38441pt.
+
+Underfull \hbox (badness 7030) in paragraph at lines 278--278
+[]\OT1/ptm/m/n/8 (b) Medium case for test-ing: ob-sta-cles
  []
 
-<figures/HardCase.jpg, id=21, 638.385pt x 475.7775pt>
+<figures/HardCase.jpg, id=22, 638.385pt x 475.7775pt>
 File: figures/HardCase.jpg Graphic file (type jpg)
 
 <use figures/HardCase.jpg>
-Package pdftex.def Info: figures/HardCase.jpg used on input line 268.
-(pdftex.def)             Requested size: 258.0pt x 192.28227pt.
-
-Overfull \hbox (6.0pt too wide) in paragraph at lines 268--269
- [][] 
- []
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
+Package pdftex.def Info: figures/HardCase.jpg used on input line 280.
+(pdftex.def)             Requested size: 149.63654pt x 111.51733pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 276.
+(Font)              <8> on input line 288.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 276.
-<figures/coarseRRTExample.jpg, id=22, 145.54375pt x 101.37875pt>
+(Font)              <6> on input line 288.
+ [4]
+<figures/coarseRRTExample.jpg, id=27, 145.54375pt x 101.37875pt>
 File: figures/coarseRRTExample.jpg Graphic file (type jpg)
 
 <use figures/coarseRRTExample.jpg>
-Package pdftex.def Info: figures/coarseRRTExample.jpg used on input line 297.
+Package pdftex.def Info: figures/coarseRRTExample.jpg used on input line 316.
 (pdftex.def)             Requested size: 258.0pt x 179.72499pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 297--298
+Overfull \hbox (6.0pt too wide) in paragraph at lines 316--317
  [][] 
  []
 
-[4 <./figures/EasyCase.jpg>]
-Underfull \vbox (badness 1184) has occurred while \output is active []
 
- [5 <./figures/HardCase.jpg> <./figures/coarseRRTExample.jpg>] (./ForageRRT.bbl
+LaTeX Warning: Reference `tab:BestParallel' on page 5 undefined on input line 3
+48.
+
+<figures/ParallelResults.jpg, id=28, 571.13374pt x 327.2225pt>
+File: figures/ParallelResults.jpg Graphic file (type jpg)
+
+<use figures/ParallelResults.jpg>
+Package pdftex.def Info: figures/ParallelResults.jpg used on input line 353.
+(pdftex.def)             Requested size: 258.0pt x 147.81796pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 353--354
+ [][] 
+ []
+
+[5 <./figures/EasyCase.jpg> <./figures/MediumCase.jpg> <./figures/HardCase.jpg>
+ <./figures/coarseRRTExample.jpg> <./figures/ParallelResults.jpg>]
+(./ForageRRT.bbl
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no œ in font ptmr7t!
@@ -341,30 +384,34 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[6
+[6] (./ForageRRT.aux)
 
-] (./ForageRRT.aux) ) 
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 3380 strings out of 495059
- 50753 string characters out of 3182030
- 130667 words of memory out of 3000000
- 6541 multiletter control sequences out of 15000+200000
+ 3558 strings out of 495059
+ 53386 string characters out of 3182030
+ 134596 words of memory out of 3000000
+ 6711 multiletter control sequences out of 15000+200000
  37701 words of font info for 71 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 38i,19n,23p,245b,349s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc
-}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/
-texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf
--dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/
-times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.p
-fb>
-Output written on ForageRRT.pdf (6 pages, 303288 bytes).
+ 38i,19n,24p,245b,349s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/time
+s/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on ForageRRT.pdf (6 pages, 397128 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
+ 62 PDF objects out of 1000 (max. 8388607)
  39 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

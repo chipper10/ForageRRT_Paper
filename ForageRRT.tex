@@ -2,6 +2,7 @@
 \documentclass[conference]{IEEEtran}
 \usepackage{graphicx}
 \usepackage{algorithm2e}
+\usepackage{subfigure}
 \begin{document}
 \title{Forage RRT - An Efficient Approach To Task-Space Goal Planning for Redundant Manipulators}
 \author{Leo Keselman\\
@@ -233,11 +234,23 @@ Empirically, 15-20 pairs of attempted connections makes for a smooth path.
 \caption{Forage RRT}
 \end{algorithm}
 
+\subsection{Parallel Implementation}
+The separate nature of the Forage RRT search and explore functions make it an ideal candidate for parallel implementation. We used a
+Master-Worker approach to the parallel implementation which is described here:
+\begin{itemize}
+\item \textbf{Initial Step: } Grow coarse step-sze RRT to an initial size greater than the number of threads to be used.
+\item \textbf{Worker Threads: } Attempt to connect fine step-size RRT to goal when seeded with start configuration from coarse step-size
+RRT. Terminate when a certain number of collisions occurs.
+\item \textbf{Master Thread: } 1) Grow coarse step-size RRT 2) Maintain worker threads by seeding them with the best available node from
+coarse step-size RRT when they terminate without success.
+\end{itemize}
+
 \section{Experiments and Evaluation}
 \label{sec:evaluation}
 \subsection{Experiments}
-Experiments were conducted on a Schunk 7 DOF arm with the DART/GRIP simulator, developed by the GOLEMS lab at Georgia Tech. We compared the
-following algorithms to the smoothed Forage RRT:
+\subsubsection{Sequential Implementation}
+Experiments were conducted on a Schunk 7 DOF arm with the DART/GRIP simulator, developed by the GOLEMS lab at Georgia Tech, on a 2.27GHz, 8
+core machine. We compared the following algorithms to the smoothed Forage RRT:
 \begin{enumerate}
 	\item Jt-RRT \cite{vande07}
 	\item Moore-Penrose Pseudo-Inverse RRT: this is the same as Jt-RRT aside from using an Moore-Penrose pseudo-inverse Jacobian to take
@@ -250,31 +263,31 @@ following algorithms to the smoothed Forage RRT:
 It is worth noting that smoothing time was included in Forage RRT results but no other results because the paths produced did not strictly
 require it for those cases. Moreover, each RRT was restarted after 10,000 nodes to reduce average planning time of all planners.
 
-Each algorithm was tested on a hard case and and easy case. The easy case is shown in Figure~\ref{fig:EasyCase} and the hard case is showin
-in Figure~\ref{fig:HardCase}. In each figure, the goal is the point where the three shown faces of the cube meet. 50 random collision-free
-start configurations were computed for each case (easy and hard) and the same 50 start configurations were used for each algorithm. Each
-start configuration was the seed for 40 runs, thus totaling 2000 runs per algorithm per case. In the interest of time, a run was considered
-a failure if the RRT had to be restarted 25 times and no solution was found. At that point, the run would have taken 400-600 seconds so each
-failure should be considered a strong penalty. 
+Each algorithm was tested on an easy, medium, and hard case, shown in in Figure~\ref{fig:cases} In each figure, the goal is the point where
+the three shown faces of the yellow and blue cube meet. 50 random collision-free start configurations were computed for each case (easy,
+medium, and hard) and the same 50 start configurations were used for each algorithm. Each start configuration was the seed for 40 runs, thus
+totaling 2000 runs per algorithm per case. In the interest of time, a run was considered a failure if the RRT had to be restarted 25 times
+and no solution was found. At that point, the run would have taken 400-600 seconds so each failure should be considered a strong penalty. 
 
-\begin{figure}[h!]
+\begin{figure*}[t]
+  \label{fig:cases}
   \centering
-    \includegraphics[width=0.5\textwidth]{figures/EasyCase.jpg}
-  \caption{Easy case for testing: no obstacles. \label{fig:EasyCase} }
-\end{figure}
-
-\begin{figure}[h!]
-  \centering
-    \includegraphics[width=0.5\textwidth]{figures/HardCase.jpg}
-  \caption{Hard case for testing: goal directly under obstacle, near edge of workspace. \label{fig:HardCase} }
-\end{figure}
+    \subfigure[Easy case for testing: no obstacles. \label{fig:EasyCase}]
+     	{\includegraphics[width=0.29\textwidth]{figures/EasyCase.jpg}}
+    \subfigure[Medium case for testing: obstacles throughout space. \label{fig:MediumCase}]
+        {\includegraphics[width=0.29\textwidth]{figures/MediumCase.jpg}}
+    \subfigure[Hard case for testing: goal directly under obstacle, near edge of workspace. \label{fig:HardCase} ]
+    	{\includegraphics[width=0.29\textwidth]{figures/HardCase.jpg}}
+    \caption{Depiction of different test cases.}
+\end{figure*}
 
 The Forage RRT parameters used for testing are given in Table~\ref{tab:ForageParams}
 
 \begin{table}
 	\centering
-	\begin{tabular}{| r | l | }
+	\begin{tabular}{| c | c | }
         	\hline
+		initialSize & 50 \\ \hline
   		randomExtendProbability - coarse & 90 \\ \hline
   		randomExtendProbability - fine & 65 \\ \hline
   		largeStepSize & 1.3\\ \hline
@@ -287,6 +300,12 @@ The Forage RRT parameters used for testing are given in Table~\ref{tab:ForagePar
 	\label{tab:ForageParams}
 \end{table}
 
+\subsubsection{Parallel Implementation}
+To understand the properties of the parallel algorithm, experiments were conducted on the same cases as the sequential Forage RRT. The
+parallel implementations were tested for 10 precomputed start configurations per case, at 40 runs per start configuration. Thus, each
+version was tested 400 times. The implementation was tested with 1,2,3,4,5, and 6 worker threads. The results were simulated using the
+DART/GRIP simulator and run on a 2.27GHz, 8 core machine.
+
 \subsection{Evaluation}
 For the purpose of visualization, the end effector positions of the coarse RRT are shown in in Figure~\ref{fig:CoarseRRT}. It's evident to
 see that the closest nodes to goal come from many different directions, making the fine RRTs more likely to be effective. The green node is
@@ -298,44 +317,64 @@ the start and the red node is the goal.
   \caption{End effector positions for the initial coarse RRT. \label{fig:CoarseRRT} }
 \end{figure}
 
-The results of the simulation are shown in Table~\ref{tab:Results}. The reported times are averaged over completed cases only. Failures
-are runs that took 400-600 seconds and did not find a solution so should be taken as a strong negative penalty to the algorithm.
+
+\subsubsection{Sequential Implementation}
+The results of the sequential implementation simulation are shown in Table~\ref{tab:Results}. The reported times are averaged over completed
+cases only. Failures are runs that took 400-600 seconds and did not find a solution so should be taken as a strong negative penalty to the
+algorithm.
+
+\begin{table*}
+        \centering
+        \begin{tabular}{| c | c | c | c | c | c | c | }
+		\hline
+                Algorithm & \textbf{Easy Avg} & \textbf{\% Comp} &\textbf{Med Avg} & \textbf{\% Comp} & \textbf{Hard Avg} & \textbf{\% Comp}\\  \hline
+                \textbf{Forage RRT}&\textbf{2.92}&\textbf{100}&\textbf{3.01}&\textbf{100}&\textbf{7.52}&\textbf{100}\\ \hline
+                \textbf{Jt-RRT}&12.12&93.7& & &62.62&29.0\\ \hline
+                \textbf{Jinv-RRT}&4.45&96.9&21.42&92.0&65.92&53.6\\ \hline
+		\textbf{BiSpace RRT}&4.57&100&21.94&99.96&36.87&80.6\\ \hline
+   		\textbf{Kin. Roadmap}&5.22&100& & &22.24&100\\ \hline
+        \end{tabular}
+        \caption{Sequential experiment results. All times in seconds.}
+        \label{tab:Results}
+\end{table*}
+
+\subsubsection{Parallel Implementation}
+The results of the parallel implementation are shown for different numbers of extra worker threads in Figure~\ref{fig:ParallelResults}. The
+results show a decline in average planning time when using the parallel implementation. The decline is not linear but neither should we
+expect it to be. Because the solution is often found in the first few attempts to connect to goal from the coarse RRT, extra threads working
+on other start points are not going to be helpful. A decline in performance is seen with 5 and 6 worker threads. We suspect this is because
+the threads start interfering with each other. Even though the machine we used for testing has 8 cores, some of them are used partially for
+other processes running on the machine. In any case, the results that improvements after 4 working threads would be minimal. The best
+average planning times achieved with the parallel implementation are summarized in Table~\ref{tab:BestParallel} and apply to the case when 4
+worker threads were implemented.
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{figures/ParallelResults.jpg}
+  \caption{Average planning times per number of extra cores used. \label{fig:ParallelResults} }
+\end{figure}
 
 \begin{table}
         \centering
-        \begin{tabular}{| c | c | c | c | c | }
-		\hline
-                Algorithm & \textbf{Easy Avg} & \textbf{\% Comp} & \textbf{Hard Avg} & \textbf{\% Comp}\\  \hline
-                \textbf{Forage RRT}&\textbf{1.14}&\textbf{100}&\textbf{2.90}&\textbf{100}\\ \hline
-                \textbf{Jt-RRT}&12.12&93.7 & & \\ \hline
-                \textbf{Jinv-RRT}&4.45&96.9& & \\ \hline
-		\textbf{BiSpace RRT}&4.57&100& & \\ \hline
-   		\textbf{Kin. Roadmap}&5.49&100&22.24&100\\ \hline
+        \begin{tabular}{| c | c | }
+                \hline
+                Case & \textbf{Av. Planning Time} \\  \hline
+                Easy & .69 \\  \hline
+		Medium & \\  \hline
+		Hard & 2.59 \\  \hline
+		Average &\textbf{} \\  \hline
         \end{tabular}
-        \caption{Experiment results. All times in seconds.}
+        \caption{Parallel (4 core) results. All times in seconds.}
         \label{tab:Results}
 \end{table}
+
+
 
 \section{Discussion}
 \subsection{Completeness}
 As shown in \cite{lavalle00}, any RRT is complete because its coverage of the workspace converges to the sampling distribution. Because the
 coarse RRT in the Forage RRT algorithm searches indefinitely, the Forage RRT is also complete. Needless to say, it is highly unlikely in
 practice that the coarse RRT will be the one to come upon the goal.
-
-\subsection{Parallel Implementation}
-\subsubsection{Implementation}
-The separate nature of the Forage RRT search and explore functions make it an ideal candidate for parallel implementation. A simple
-implementation tested here worked as follows:
-\begin{itemize}
-\item \textbf{Initial Step: } Grow coarse step-sze RRT to an initial size greater than the number of threads to be used.
-\item \textbf{Worker Threads: } Attempt to connect fine step-size RRT to goal when seeded with start configuration from coarse step-size
-RRT. Terminate when a certain number of collisions occurs.
-\item \textbf{Main Thread: } 1) Grow coarse step-size RRT 2) Maintain worker threads by seeding them with the best available node from
-coarse step-size RRT when they terminate without success.
-\end{itemize}
-
-\subsubsection{Results}
-
 
 \subsection{Parameters}
 The Forage RRT parameters used to achieve the results in Table~\ref{tab:Results} are given in Table~\ref{tab:ForageParams}. These parameters
@@ -354,7 +393,7 @@ waypoint in the search to bias the tree toward an area which is likely to be suc
 
 \section{Conclusion}
 We have presented the Forage RRT algorithm for motion planning. We believe the algorithm's efficieny on tough problems, consistency,
-completeness, ease of implementation, and potential for adaptibility make it the best available motion planning algorithm for general
+completeness, ease of implementation, and parallel potetial make it the best available motion planning algorithm for general
 problems where the goal is specified in task space. We have shown its effectiveness specifically for redundant manipulators.
 
 \bibliographystyle{plain}
