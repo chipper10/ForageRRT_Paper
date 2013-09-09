@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.6.27)  6 SEP 2013 16:17
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.6.27)  9 SEP 2013 14:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -193,11 +193,7 @@ Package: subfigure 2002/03/15 v2.1.5 subfigure package
 \subfig@top=\skip62
 \subfig@bottom=\skip63
 )
-(./ForageRRT.aux
-
-LaTeX Warning: Label `tab:Results' multiply defined.
-
-)
+(./ForageRRT.aux)
 \openout1 = `ForageRRT.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
@@ -277,12 +273,12 @@ e
 
 
 ]
-<figures/bugTrapRRT.jpg, id=7, 896.34875pt x 672.5125pt>
-File: figures/bugTrapRRT.jpg Graphic file (type jpg)
+<figures/BugTrapRRT.pdf, id=7, 796.9775pt x 597.23125pt>
+File: figures/BugTrapRRT.pdf Graphic file (type pdf)
 
-<use figures/bugTrapRRT.jpg>
-Package pdftex.def Info: figures/bugTrapRRT.jpg used on input line 92.
-(pdftex.def)             Requested size: 258.0pt x 193.56647pt.
+<use figures/BugTrapRRT.pdf>
+Package pdftex.def Info: figures/BugTrapRRT.pdf used on input line 92.
+(pdftex.def)             Requested size: 258.0pt x 193.33235pt.
 
 Overfull \hbox (6.0pt too wide) in paragraph at lines 92--93
  [][] 
@@ -291,7 +287,7 @@ Overfull \hbox (6.0pt too wide) in paragraph at lines 92--93
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[2 <./figures/bugTrapRRT.jpg>]
+[2 <./figures/BugTrapRRT.pdf>]
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 153.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -308,63 +304,59 @@ Underfull \hbox (badness 2245) in paragraph at lines 252--255
 er-i-ments were con-
  []
 
-<figures/EasyCase.jpg, id=20, 637.38126pt x 475.7775pt>
-File: figures/EasyCase.jpg Graphic file (type jpg)
+<figures/EasyCase.png, id=31, 1019.81pt x 737.75626pt>
+File: figures/EasyCase.png Graphic file (type png)
 
-<use figures/EasyCase.jpg>
-Package pdftex.def Info: figures/EasyCase.jpg used on input line 276.
-(pdftex.def)             Requested size: 149.63654pt x 111.69156pt.
+<use figures/EasyCase.png>
+Package pdftex.def Info: figures/EasyCase.png used on input line 276.
+(pdftex.def)             Requested size: 149.63654pt x 108.2496pt.
 
-<figures/MediumCase.jpg, id=21, 551.05875pt x 428.60126pt>
-File: figures/MediumCase.jpg Graphic file (type jpg)
+<figures/MediumCase.png, id=32, 1019.81pt x 737.75626pt>
+File: figures/MediumCase.png Graphic file (type png)
 
-<use figures/MediumCase.jpg>
-Package pdftex.def Info: figures/MediumCase.jpg used on input line 278.
-(pdftex.def)             Requested size: 149.63654pt x 116.38441pt.
+<use figures/MediumCase.png>
+Package pdftex.def Info: figures/MediumCase.png used on input line 278.
+(pdftex.def)             Requested size: 149.63654pt x 108.2496pt.
 
 Underfull \hbox (badness 7030) in paragraph at lines 278--278
 []\OT1/ptm/m/n/8 (b) Medium case for test-ing: ob-sta-cles
  []
 
-<figures/HardCase.jpg, id=22, 638.385pt x 475.7775pt>
-File: figures/HardCase.jpg Graphic file (type jpg)
+<figures/HardCase.png, id=33, 1019.81pt x 737.75626pt>
+File: figures/HardCase.png Graphic file (type png)
 
-<use figures/HardCase.jpg>
-Package pdftex.def Info: figures/HardCase.jpg used on input line 280.
-(pdftex.def)             Requested size: 149.63654pt x 111.51733pt.
+<use figures/HardCase.png>
+Package pdftex.def Info: figures/HardCase.png used on input line 280.
+(pdftex.def)             Requested size: 149.63654pt x 108.2496pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 288.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 288.
  [4]
-<figures/coarseRRTExample.jpg, id=27, 338.26375pt x 234.8775pt>
-File: figures/coarseRRTExample.jpg Graphic file (type jpg)
+<figures/coarseRRTExample.png, id=38, 440.64626pt x 253.94875pt>
+File: figures/coarseRRTExample.png Graphic file (type png)
 
-<use figures/coarseRRTExample.jpg>
-Package pdftex.def Info: figures/coarseRRTExample.jpg used on input line 316.
-(pdftex.def)             Requested size: 258.0pt x 179.15027pt.
+<use figures/coarseRRTExample.png>
+Package pdftex.def Info: figures/coarseRRTExample.png used on input line 316.
+(pdftex.def)             Requested size: 258.0pt x 148.6931pt.
 
 Overfull \hbox (6.0pt too wide) in paragraph at lines 316--317
  [][] 
  []
 
+<figures/ParallelGraph.pdf, id=39, 796.9775pt x 597.23125pt>
+File: figures/ParallelGraph.pdf Graphic file (type pdf)
 
-LaTeX Warning: Reference `tab:BestParallel' on page 5 undefined on input line 3
-48.
-
-<figures/ParallelResults.jpg, id=28, 571.13374pt x 327.2225pt>
-File: figures/ParallelResults.jpg Graphic file (type jpg)
-
-<use figures/ParallelResults.jpg>
-Package pdftex.def Info: figures/ParallelResults.jpg used on input line 353.
-(pdftex.def)             Requested size: 258.0pt x 147.81796pt.
+<use figures/ParallelGraph.pdf>
+Package pdftex.def Info: figures/ParallelGraph.pdf used on input line 353.
+(pdftex.def)             Requested size: 258.0pt x 193.33235pt.
 
 Overfull \hbox (6.0pt too wide) in paragraph at lines 353--354
  [][] 
  []
 
-[5 <./figures/EasyCase.jpg> <./figures/MediumCase.jpg> <./figures/HardCase.jpg>
- <./figures/coarseRRTExample.jpg> <./figures/ParallelResults.jpg>]
+[5 <./figures/EasyCase.png> <./figures/MediumCase.png> <./figures/HardCase.png>
+ <./figures/coarseRRTExample.png (PNG copy)> <./figures/ParallelGraph.pdf>]
 (./ForageRRT.bbl
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
@@ -384,34 +376,28 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[6] (./ForageRRT.aux)
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
- ) 
+[6] (./ForageRRT.aux) ) 
 Here is how much of TeX's memory you used:
  3558 strings out of 495059
- 53386 string characters out of 3182030
- 134596 words of memory out of 3000000
+ 53376 string characters out of 3182030
+ 134567 words of memory out of 3000000
  6711 multiletter control sequences out of 15000+200000
  37701 words of font info for 71 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
  38i,19n,24p,245b,349s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/time
-s/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on ForageRRT.pdf (6 pages, 411837 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.e
+nc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
+w/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a
+.pfb>
+Output written on ForageRRT.pdf (6 pages, 437273 bytes).
 PDF statistics:
- 62 PDF objects out of 1000 (max. 8388607)
- 39 compressed objects within 1 object stream
+ 87 PDF objects out of 1000 (max. 8388607)
+ 55 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

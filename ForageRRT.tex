@@ -89,7 +89,7 @@ approach too struggles to find solutions quickly in bug-trap problems.
 
 \begin{figure}[h!]
   \centering
-    \includegraphics[width=0.5\textwidth]{figures/bugTrapRRT.jpg}
+    \includegraphics[width=0.5\textwidth]{figures/BugTrapRRT.pdf}
   \caption{An RRT attempting a bug trap problem. \label{fig:BugTrapRRT} }
 \end{figure}
 
@@ -273,11 +273,11 @@ and no solution was found. At that point, the run would have taken 400-600 secon
   \label{fig:cases}
   \centering
     \subfigure[Easy case for testing: no obstacles. \label{fig:EasyCase}]
-     	{\includegraphics[width=0.29\textwidth]{figures/EasyCase.jpg}}
+     	{\includegraphics[width=0.29\textwidth]{figures/EasyCase.png}}
     \subfigure[Medium case for testing: obstacles throughout space. \label{fig:MediumCase}]
-        {\includegraphics[width=0.29\textwidth]{figures/MediumCase.jpg}}
+        {\includegraphics[width=0.29\textwidth]{figures/MediumCase.png}}
     \subfigure[Hard case for testing: goal directly under obstacle, near edge of workspace. \label{fig:HardCase} ]
-    	{\includegraphics[width=0.29\textwidth]{figures/HardCase.jpg}}
+    	{\includegraphics[width=0.29\textwidth]{figures/HardCase.png}}
     \caption{Depiction of different test cases.}
 \end{figure*}
 
@@ -313,7 +313,7 @@ The green node is the start and the red node is the goal.
 
 \begin{figure}[h!]
   \centering
-    \includegraphics[width=0.5\textwidth]{figures/coarseRRTExample.jpg}
+    \includegraphics[width=0.5\textwidth]{figures/coarseRRTExample.png}
   \caption{End effector positions for the initial coarse RRT. \label{fig:CoarseRRT} }
 \end{figure}
 
@@ -329,10 +329,10 @@ algorithm.
 		\hline
                 Algorithm & \textbf{Easy Avg} & \textbf{\% Comp} &\textbf{Med Avg} & \textbf{\% Comp} & \textbf{Hard Avg} & \textbf{\% Comp}\\  \hline
                 \textbf{Forage RRT}&\textbf{2.92}&\textbf{100}&\textbf{3.01}&\textbf{100}&\textbf{7.52}&\textbf{100}\\ \hline
-                \textbf{Jt-RRT}&12.12&93.7& & &62.62&29.0\\ \hline
+                \textbf{Jt-RRT}&12.12&93.7&30.51&82.7&62.62&29.0\\ \hline
                 \textbf{Jinv-RRT}&4.45&96.9&21.42&92.0&65.92&53.6\\ \hline
 		\textbf{BiSpace RRT}&4.57&100&21.94&99.96&36.87&80.6\\ \hline
-   		\textbf{Kin. Roadmap}&5.22&100& & &22.24&100\\ \hline
+   		\textbf{Kin. Roadmap}&5.22&100&4.72&100& &\\ \hline
         \end{tabular}
         \caption{Sequential experiment results. All times in seconds.}
         \label{tab:Results}
@@ -350,7 +350,7 @@ worker threads were implemented.
 
 \begin{figure}[h!]
   \centering
-    \includegraphics[width=0.5\textwidth]{figures/ParallelResults.jpg}
+    \includegraphics[width=0.5\textwidth]{figures/ParallelGraph.pdf}
   \caption{Average planning times per number of extra cores used. \label{fig:ParallelResults} }
 \end{figure}
 
@@ -360,12 +360,12 @@ worker threads were implemented.
                 \hline
                 Case & \textbf{Av. Planning Time} \\  \hline
                 Easy & .69 \\  \hline
-		Medium & \\  \hline
+		Medium & 1.00 \\  \hline
 		Hard & 2.59 \\  \hline
-		Average &\textbf{} \\  \hline
+		Average &\textbf{1.43} \\  \hline
         \end{tabular}
         \caption{Parallel (4 core) results. All times in seconds.}
-        \label{tab:Results}
+        \label{tab:BestParallel}
 \end{table}
 
 
