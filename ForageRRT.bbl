@@ -77,6 +77,11 @@ Yoram Koren and Johann Borenstein.
 \newblock In {\em Robotics and Automation, 1991. Proceedings., 1991 IEEE
   International Conference on}, pages 1398--1404. IEEE, 1991.
 
+\bibitem{lavalle98}
+Steven~M LaValle.
+\newblock Rapidly-exploring random trees a Цew tool for path planning.
+\newblock 1998.
+
 \bibitem{lavalle00}
 Steven~M LaValle and James~J Kuffner~Jr.
 \newblock Rapidly-exploring random trees: Progress and prospects.
