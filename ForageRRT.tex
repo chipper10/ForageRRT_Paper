@@ -35,7 +35,7 @@ the configuration of the goal were known, this problem could be satisfactorily s
 In this paper we present the Forage RRT, which searches for the goal configuration as part of planning but also tackles bug trap type
 problems with relative ease. The result is a reliable planner which is fast and consistent at solving a wide range of manipulation problems
 in environments with obstacles. The main idea behind the approach is to initially explore the manipulator space quickly with a large
-step-size RRT and then attempt to connect to goal using a small step-size $J^{\#}-RRT$ from promising nodes in the large step-size RRT. The
+step-size RRT and then attempt to connect to goal using a small step-size J+RRT from promising nodes in the large step-size RRT. The
 Forage RRT lends itself to parallel implementation and we show that this provides further improvement in average planning times. We believe
 the ease of implementing this approach along with its excellent performance on all problems will allow it to be used as a general
 manipulation planner both in industry and academia.
@@ -78,11 +78,12 @@ was presented in \cite{ahuactzin99}. We compare the results of this algorithm to
 The other approach to the inverse kinematics problem is to incorporate it into the planning search. This allows the inverse kinematics to be
 resolution complete and guaranteed reachable from the start. The first paper to use this approach was \cite{bertram06}, which biased the RRT
 search to be around the nodes already added which were closest in end-effector space to goal. Significant speed improvements were achieved
-by \cite{vande07} in this approach by using the Jacobian transpose to take steps in the direction of the goal from the existing tree. This
-approach, however, is very susceptible to getting stuck when the goal is occluded by an obstacle. Finally, \cite{diankov08} and \cite{yao05}
-improved on the idea by growing an end-effector space tree and using this tree to bias the growth of the configuration-space tree.
-\cite{diankov08} grew the end-effector space stree from the goal in a bidirectional type approach whereas \cite{yao05} made end effector
-paths from start to goal. This approach too struggles to find solutions quickly in bug-trap problems.
+by \cite{vande07} and \cite{vahrenkamp09} in this approach by using the Jacobian transpose and Jacobian pseudo-inverse respectively to take
+steps in the direction of the goal from the existing tree. This approach, however, is very susceptible to getting stuck when the goal is
+occluded by an obstacle. Finally, \cite{diankov08} and \cite{yao05} improved on the idea by growing an end-effector space tree and using
+this tree to bias the growth of the configuration-space tree.  \cite{diankov08} grew the end-effector space stree from the goal in a
+bidirectional type approach whereas \cite{yao05} made end effector paths from start to goal. This approach too struggles to find solutions
+quickly in bug-trap problems.
  
 \section{RRT and the Bug-Trap Problem}
 \label{sec:bugtraprrt}
@@ -140,8 +141,7 @@ used to decide which node in the coarse step-size RRT should be used to attempt 
 \subsection{RRT Extend Implementation}
 For random extensions of the search tree, we use the standard extension procedure of picking a random point in configuration space and
 taking a step towards it from the nearest neighbor already in the tree. For extensions toward the goal, we use the Moore-Penrose
-pseudo-inverse Jacobian to take a step in the proper direction. Note that this is similar to the Jt-RRT presented in \cite{vande07} but we
-found that using the pseudo-inverse instead of the transpose of the Jacobian was the more effective approach. The overall extend
+pseudo-inverse Jacobian to take a step in the proper direction. This approach is described in \cite{vahrenkamp09}. The overall extend
 implementation is shown in Algorithm~\ref{alg:extend}. When implementing this algorithm, one should take good care to make sure that nodes
 added to the tree are not only valid configurations themselves but that the link between the new node and its parent is valid. In a fine
 step-size RRT this is trivial because we can assume that if the new node is valid, the link too is valid. However, for a coarse step-size
@@ -252,8 +252,8 @@ coarse step-size RRT when they terminate without success.
 Experiments were conducted on a Schunk 7 DOF arm with the DART/GRIP simulator, developed by the GOLEMS lab at Georgia Tech, on a 2.27GHz, 8
 core machine. We compared the following algorithms to the smoothed Forage RRT:
 \begin{enumerate}
-	\item Jt-RRT \cite{vande07}
-	\item $J^{\#}-RRT$: this is the same as Jt-RRT aside from using a Moore-Penrose pseudo-inverse Jacobian to take
+	\item RRT-JT \cite{vande07}
+	\item J+RRT \cite{vahrenkamp09}
 	      goal directed steps
 	\item BiSpace RRT \cite{diankov08}
 	\item Kinematic Roadmap \cite{ahuactzin99}: note that the paths produced from this algorithm would be too long to be used for most
@@ -329,7 +329,7 @@ algorithm.
 		\hline
                 Algorithm & \textbf{Easy Avg} & \textbf{\% Comp} &\textbf{Med Avg} & \textbf{\% Comp} & \textbf{Hard Avg} & \textbf{\% Comp}\\  \hline
                 \textbf{Forage RRT}&\textbf{2.92}&\textbf{100}&\textbf{3.01}&\textbf{100}&\textbf{7.52}&\textbf{100}\\ \hline
-                \textbf{Jt-RRT}&12.12&93.7&30.51&82.7&62.62&29.0\\ \hline
+                \textbf{RRT-JT}&12.12&93.7&30.51&82.7&62.62&29.0\\ \hline
                 \textbf{Jinv-RRT}&4.45&96.9&21.42&92.0&65.92&53.6\\ \hline
 		\textbf{BiSpace RRT}&4.57&100&21.94&99.96&36.87&80.6\\ \hline
    		\textbf{Kin. Roadmap}&5.22&100&4.72&100&22.21&100\\ \hline

@@ -93,6 +93,14 @@ Joey~K Parker, Ahmad~R Khoogar, and David~E Goldberg.
 \newblock In {\em Robotics and Automation, 1989. Proceedings., 1989 IEEE
   International Conference on}, pages 271--276. IEEE, 1989.
 
+\bibitem{vahrenkamp09}
+Niko Vahrenkamp, Dmitry Berenson, Tamim Asfour, James Kuffner, and R{\"u}diger
+  Dillmann.
+\newblock Humanoid motion planning for dual-arm manipulation and re-grasping
+  tasks.
+\newblock In {\em Intelligent Robots and Systems, 2009. IROS 2009. IEEE/RSJ
+  International Conference on}, pages 2464--2470. IEEE, 2009.
+
 \bibitem{vande07}
 M~Vande~Weghe, Dave Ferguson, and Siddhartha~S Srinivasa.
 \newblock Randomized path planning for redundant manipulators without inverse

@@ -7,45 +7,45 @@ Database file #2: MotionPlanning.bib
 Database file #3: IK.bib
 Warning--empty journal in lavalle98
 Warning--empty journal in lavalle00
-You've used 17 entries,
+You've used 18 entries,
             2118 wiz_defined-function locations,
-            600 strings with 7217 characters,
-and the built_in function-call counts, 7015 in all, are:
-= -- 747
-> -- 258
-< -- 11
-+ -- 107
-- -- 84
-* -- 445
-:= -- 1057
-add.period$ -- 60
-call.type$ -- 17
-change.case$ -- 93
+            606 strings with 7500 characters,
+and the built_in function-call counts, 7611 in all, are:
+= -- 810
+> -- 286
+< -- 12
++ -- 118
+- -- 94
+* -- 485
+:= -- 1142
+add.period$ -- 64
+call.type$ -- 18
+change.case$ -- 101
 chr.to.int$ -- 0
-cite$ -- 19
-duplicate$ -- 302
-empty$ -- 567
-format.name$ -- 84
-if$ -- 1563
+cite$ -- 20
+duplicate$ -- 327
+empty$ -- 611
+format.name$ -- 94
+if$ -- 1699
 int.to.chr$ -- 0
-int.to.str$ -- 17
-missing$ -- 17
-newline$ -- 88
-num.names$ -- 34
-pop$ -- 110
+int.to.str$ -- 18
+missing$ -- 18
+newline$ -- 93
+num.names$ -- 36
+pop$ -- 121
 preamble$ -- 1
-purify$ -- 76
+purify$ -- 83
 quote$ -- 0
-skip$ -- 242
+skip$ -- 263
 stack$ -- 0
-substring$ -- 532
-swap$ -- 117
-text.length$ -- 11
+substring$ -- 577
+swap$ -- 130
+text.length$ -- 12
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 68
+type$ -- 72
 warning$ -- 2
-while$ -- 71
-width$ -- 19
-write$ -- 196
+while$ -- 76
+width$ -- 20
+write$ -- 208
 (There were 2 warnings)
