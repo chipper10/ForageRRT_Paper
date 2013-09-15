@@ -255,25 +255,26 @@ on the path to the goal.
 An inefficiency in the basic RRT algorithm is that unsuccessful steps to
 goal may continuously be taken from the same node because that node is the
 closest to goal, as illustrated in \S\ref{sec:bugtraprrt}.
-In RRT implementations for static environments, it is unnecessary and
-inefficient to continue to attempt steps to goal from nodes from which such
-a step has already been attempted - if it did not reach goal before, it will
-not again.  Our solution to the problem is to implement a Goal Heap. 
+%In RRT implementations for static environments, it is unnecessary and
+%inefficient to continue to attempt steps to goal from nodes from which such
+%a step has already been attempted - if it did not reach goal before, it will
+%not again.  
+Our solution to the problem is to implement a goal heap. 
 When new nodes are added to the RRT, they are also added to the goal heap
 along with their value (some heuristic that evaluates the fitness of the
 joint state with regards to proximity to goal). In our case, the value of a
 node was simply the inverse of its Euclidean distance to goal position. The
 heap data structure automatically orders the nodes by value so that the top
 of the heap is the highest value node. Once a step to goal is attempted from
-a node, that node is removed from the Goal Heap because using it again for a
-step to goal would be a fruitless endeavor.  While the Goal Heap can apply
+a node, that node is removed from the goal heap because using it again for a
+step to goal would be a fruitless endeavor.  While the goal heap can apply
 to any RRT implementation, it is essential for the Forage RRT because the
 heap provides a node in the coarse tree for use when attempting a fine 
 step-size J+RRT to connect to goal.
 
 \subsection{RRT Extend Implementations}
 Both coarse and fine RRT implementations use the J+RRT algorithm 
-\cite{vahrenkamp09} with the proposed Goal Heap augmentation (J+RRT+GH).  
+\cite{vahrenkamp09} with the proposed goal heap augmentation (J+RRT+GH).  
 Random extensions of the search tree use the
 standard extension procedure of picking a random point in joint space and
 taking a step towards it from the nearest neighbor already in the tree. 
@@ -283,16 +284,17 @@ shown in Algorithm~\ref{alg:extend}.
 
 \paragraph{Coarse versus fine search.}
 The coarse search should focus more on rapidly exploring the space rather
-than seeking the goal.  This is done by lowering the probability of moving
+than seeking the goal.  This is done by lowering the probability of stepping
 to goal in the coarse J+RRT+GH implementation, which also lowers the
 exploration cost.  Since the coarse J+RRT+GH takes large step sizes, for each
 node extension, the link between the new node and its parent must be checked 
 for validity by iterating through its length at an acceptable resolution and 
 making sure each smaller step is valid.  In contrst, the fine search should 
 focus on exploring a small region with a greater intent to find the final
-goal state.  The fine J+RRT implementation has a higher probability of moving 
-to goal.  For the fine step-size J+RRT+GH we assume that if the new node is
-valid, then the path connecting the parent node to the new node is also valid. 
+goal state.  The fine J+RRT implementation has a higher probability of
+stepping to goal.  For the fine step-size J+RRT+GH, we assume that if the new
+node is valid, then the path connecting the parent node to the new node is
+also valid. 
 
 \begin{algorithm}
   \label{alg:extend}
@@ -352,12 +354,12 @@ nodes to initialize the fine searches with. The second while loop attempts to
 connect the promising nodes from the coarse step-size tree to the goal with a 
 fine step-size tree. Once a fine step-size RRT experiences a certain number 
 of collisions, we give up on it and try to start another one from the next 
-most promising node. Once a certain number of the fine step-size searches fail, 
-we further grow the coarse step-size tree to replenish the heap with promising 
-start nodes. This constant giving up and restarting from alternative promising 
-nodes allows us to make the fine step-size RRT greedy, making it fast in easy 
-situations but also robust to more challenging situations. A full list of
-parameters we used is given in Section~\ref{sec:evaluation}.
+most promising node. After a given number of fine step-size searches fail, 
+we grow the coarse step-size tree to replenish the heap with promising 
+start nodes. The finite search cost and restarts from alternative promising
+nodes allows us to make the fine step-size RRT greedy, making it fast in
+easy situations but also robust to more challenging situations. A full list
+of parameters we used is given in Section~\ref{sec:evaluation}.
 
 Once the fine step-size RRT has reached the goal, the found path is obtained
 by tracing to the root of the fine step-size tree, which is a node in the
