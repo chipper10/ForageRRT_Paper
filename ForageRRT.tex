@@ -163,7 +163,7 @@ reachable from the start configuration. An inverse kinematics approach that
 was guaranteed to return a configuration reachable from start was presented
 in \cite{ahuactzin99}. 
 
-When the planning problem incorporates also the inverse kinematics problem
+When the planning problem also incorporates the inverse kinematics problem
 as part of it, then the inverse kinematics solution will be resolution
 complete and guaranteed reachable from the start. In \cite{bertram06}, the
 RRT search is biased to be around the existing nodes which were closest in 
@@ -177,7 +177,7 @@ end-effector space tree which is then used to guide the growth of the
 joint space tree \cite{diankov08,yao05}.  The former, \cite{diankov08},
 grows the end-effector space tree from the goal in a bidirectional-type 
 approach whereas the latter, \cite{yao05}, creates end-effector paths from 
-start to goal. The latter approach struggles to find solutions quickly in 
+start to goal. Both approaches struggle to find solutions quickly in 
 bug-trap problems.
  
 \section{RRT and the Bug-Trap Problem}
@@ -192,7 +192,7 @@ bug-trap problems.
 Figure~\ref{fig:BugTrapRRT} shows an example of a uni-directional RRT 
 attempting to solve a problem where the goal is occluded by an object.  The
 state of the RRT is shown after 12 iterations of the extend operation (with
-the probability of taking a step to goal was 35\%). At this state of the
+the probability of taking a step to goal being 35\%). At this state of the
 tree, we can see that two problems emerge in our quest to connect the tree 
 to the goal node:
 \begin{enumerate}
@@ -363,7 +363,7 @@ of parameters we used is given in Section~\ref{sec:evaluation}.
 
 Once the fine step-size RRT has reached the goal, the found path is obtained
 by tracing to the root of the fine step-size tree, which is a node in the
-coar step-size tree, then tracing to the root of the coarse step-size tree.
+coarse step-size tree, then tracing to the root of the coarse step-size tree.
 Due to the mixed step-size RRTs, the raw final plan will not be attractive, 
 especially near the start. For this purpose, path smoothing is required to 
 make the path acceptable. This is done in a quick manner by taking pairs of
