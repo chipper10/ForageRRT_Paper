@@ -2,401 +2,625 @@
 \documentclass[conference]{IEEEtran}
 \usepackage{graphicx}
 \usepackage{algorithm2e}
-\usepackage{subfigure}
+\usepackage[tight]{subfigure}
+%\usepackage[sort&compress,numbers,merge]{natbib}
+
 \begin{document}
-\title{Forage RRT - An Efficient Approach To Task-Space Goal Planning for Redundant Manipulators}
-\author{Leo Keselman\\
-	School of ECE\\
-	 Georgia Institute of Technology\\
-	 L.D.Keselman@gmail.com \and
-	Patricio Vela\\ 
-	School of ECE\\
-	Georgia Institute of Technology\\
-	 pvela@ece.gatech.edu
+\title{Forage RRT - An Efficient Approach To Task-Space Goal Planning for 
+  Redundant Manipulators}
+\author{%
+  Leo Keselman\\ School of ECE\\ Georgia Institute of Technology\\
+    L.D.Keselman@gmail.com \and
+  Patricio Vela\\ School of ECE\\ Georgia Institute of Technology\\
+    pvela@ece.gatech.edu
 }
 \maketitle
+
+\newcommand{\CITE}{{\bf [CITE]}}
+
+\begin{abstract}
+Achieving efficient end-effector planning for manipulators in real world
+workspaces is challenging due to the fact that planning is performed in
+manipulator joint space, while the planning goal is given in end-effector or
+tool space.  
+For manipulator planning, the problem becomes a joint path
+planning and inverse kinematics problem to be resolved efficiently, in spite
+of the potentially infinite number of inverse solutions to the end-effector
+goal state and the nonlinear relationship between joint configurations and
+world obstacles.  The Forage-RRT algorithm described in this paper attempts
+to efficiently and quickly resolve the end-effector or tool planning
+problem.  Using ideas from foraging theory, Forage-RRT implements a
+diffusion-based search strategy with two rates of diffusion, one high and
+one low, which simulate both long jumps (coarse search) and focused small
+area exploration (fine search) in the joint space, respectively.  During
+coarse search, it is important to keep track of past fine searches,
+therefore the traditional RRT algorithm is augmented with a goal heap that
+keeps track of potential focused search regions and discards them when
+they result in failure.  By mixing between two search distributions with
+different spreads, the search space is rapidly covered and potentially
+fruitful avenues are finely explored.  The search coverage advantages of
+foraging identified in the biological research literature are demonstrated
+here for end-effector based, manipulator path planning.  
+\end{abstract}
+
+%Modern planners can efficiently and rapidly identify paths when
+%the initial state, the final state, and the planning states are all in
+%the same space.  
+
 \section{Introduction}
-One of the ultimate goals of motion planning algorithms for manipulators is to allow the manipulator to automatically find a collision-free
-path in a general environment between any given start configuration and a goal point specified in end-effector space coordinates. The goal
-is ideally specified in end effector space coordinates because it is almost always the end effector which interacts with the object to be
-manipulated. The specific configuration of the other links of the manipulator is usually not important as long as it is not in collision
-with workspace obstacles. Examples of end effector tools which interact with objects include hands, magnets, suction cups, paint sprayers,
-and welders. Thus, any practical manipulator planner has to convert end-effector space goal coordinates to configuration space goal
-coordinates, i.e. the configuration of the manipulator which achieves the given end effector goal coordinate.
+Task-based, manipulator motion planning algorithms seek to automatically and
+quickly find a collision-free path in a general environment between any
+given initial joint configuration (usually modeled by $R^m$ where $m$ is the
+degrees of freedom of all the joints) and a goal point specified in 
+end-effector or task space (a subspace of $SE(3)$).  Here, the goal is
+specified in end-effector space because it is almost always the end-effector
+(or tool) which interacts with the object to be manipulated. The specific
+configuration of the final joint configuration is usually not important so
+long as it is not in collision with workspace obstacles.  Examples of end
+effector tools which interact with objects include hands, magnets, suction
+cups, paint sprayers, and welders. Any practical manipulator planner has to
+convert the given initial information into a trajectory fully residing in
+joint space and meeting existing collision constraints.
 
-In the literature, the two main approaches to solving this problem have been to either figure out the configuration-space goal coordinate
-directly using inverse kinematics or to incorporate the search for the configuration space goal coordinate into the planning. To date, we
-are not aware of any inverse kinematics algorithm for general n-link manipulators which is complete, fast, and returns a configuration
-guaranteed to be reachable from the start configuration. Incorporating inverse kinematics into the planning, especially when the planning
-algorithm is the Rapidly-Exploring Random Tree (RRT) alleviates all of these problems. However, this approach struggles to efficiently solve
-a certain class of problems, known as bug-trap problems, wherein the approach to the start or goal is largely occluded by an obstacle. If
-the configuration of the goal were known, this problem could be satisfactorily solved by the Bidirectional RRT. 
+The literature consists of two main approaches to solving the task-space
+planning problem: either first solve end-effector goal directly using
+inverse kinematics, or incorporate the search for the end-effector 
+goal into planning.   Solving for a feasible inverse kinematics is difficult
+due to the need to identify a goal joint configuration with collision-free
+connectivity to the initial joint configuration.  To date, we are not
+aware of an inverse kinematics algorithm for general n-link manipulators
+which is complete, fast, and returns a configuration guaranteed to be
+reachable from the start configuration.  Were it to exist, then the
+task-space planning problem would be converted into a joint-space planning
+problem with task-space obstacle constraints.  An efficient solution would
+then be the Bidirectional RRT \CITE, which is in the class of
+Rapidly-Exploring Random Tree (RRT) algorithms \CITE, or any other solution
+known to be fast (see \S \ref{sec:related}).
 
-In this paper we present the Forage RRT, which searches for the goal configuration as part of planning but also tackles bug trap type
-problems with relative ease. The result is a reliable planner which is fast and consistent at solving a wide range of manipulation problems
-in environments with obstacles. The main idea behind the approach is to initially explore the manipulator space quickly with a large
-step-size RRT and then attempt to connect to goal using a small step-size J+RRT from promising nodes in the large step-size RRT. The
-Forage RRT lends itself to parallel implementation and we show that this provides further improvement in average planning times. We believe
-the ease of implementing this approach along with its excellent performance on all problems will allow it to be used as a general
-manipulation planner both in industry and academia.
+\paragraph{Problem Statement}
+This paper tackles the second approach to task-space planning.  The initial
+state is given in joint space.  The goal of the plan is expected to be 
+specified as an end-effector configuration, either position only or position 
+and orientation. The only assumptions are that the model of the manipulator
+is known (at least enough to calculate a Jacobian) and that the world can be
+queried to see if a given manipulator configuration would produce a
+collision or not.  The task-space motion planner for (redundant) manipulators 
+should be complete, single-query, and reliably fast for all reasonable
+problems posed. 
 
-The layout of this paper will be to present previous work which we build upon as well as other approaches to the same problem, an analysis
-of the shortcomings of the RRT in bug-trap problems, the implementation of the Forage-RRT algorithm, experiments and results compared to
-other planners having the same problem statement, and finally a discussion of possible improvement to the Forage RRT.  
+\paragraph{Contribution}
+The proposed solution, Forage-RRT, is an RRT algorithm with multiple 
+diffusion rates and a greedy, goal-directed phase as part of planning.  
+The main idea behind Forage-RRT is to initially explore the
+manipulator space quickly with a large step-size RRT (high
+diffusion rate) and then attempt to connect to the goal using a small
+step-size RRT (low diffusion rate) from promising nodes in the large
+step-size RRT. The algorithm alternates between the high and low diffusion
+rate modes.  
+To enable sensible greedy, goal-directed searches, the RRT is
+augmented with a task-space goal heap (RRT+GH), which orders the RRT
+joint space configurations via a heuristic score.  The ordering determines
+which node will be used to initiate the greedy search.
+Promising coarse step-size tree nodes are selected and removed from the goal 
+heap, then used to initialize a small step-size RRT search.  
+Forage RRT lends itself to parallel (or multi-core) implementation by
+running several low-diffusion rate searches simultaneously.  We show that
+Forage-RRT provides competitive average planning times that are further
+improved through parallelization.  The result is a reliable planner which is
+fast and consistent at solving a potentially wide range of manipulation
+problems in environments with obstacles. 
+%We believe the ease of implementing this approach along with its excellent
+%performance on all problems will allow it to be used as a general
+%manipulation planner both in industry and academia.
 
-\section{Problem Statement}
-In this research, we are attempting to develop a motion planner for redundant manipulators which is complete, single-query, and reliably
-fast for all reasonable problems posed. The goal of the plan is expected to be specified as an end-effector configuration, either position
-only or position and rotation. The only assumptions are that the model of the manipulator is known (at least enough to calculate a
-Jacobian) and that the world can be queried to see if a given manipulator configuration would produce a collision or not.
-
+\paragraph{Organization}
+The paper presents previous work we build upon as well as other
+approaches to the same problem (\S \ref{sec:related}), 
+an analysis of the shortcomings of the RRT in bug-trap problems 
+(\S \ref{sec:bugtraprrt}), 
+the implementation of the Forage-RRT algorithm (\S \ref{sec:implementation}), 
+experiments and results compared to other planners having the same problem 
+statement (\S \ref{sec:evaluation}), and 
+finally a discussion of possible improvements to Forage-RRT (\S \ref{sec:disc}).  
 \section{Related Work}
-To date, no complete motion planning algorithms are tractible for high dimensional systems such as manipulators. However, over the last 30
-years or so, many algorithms have been presented that solve high dimensional motion planning problems. One of the most famous and most cited
-approaches is the Artificial Potential Field Method originally presented in \cite{khatib86}. Although this method is fast enough to be
-used in a single query planner, it depends on obstacles being of a simple geometry and, as \cite{koren91} points out, suffers from several
-fundamental issues such as getting stuck in local minima, no passage between closely spaced obstacles, and oscillations in certain
-conditions. Several attempts have been made (e.g. \cite{connolly90} \cite{ge00}) to solve these issues by the formulation of new potential
-functions. However, these functions either take prohibitively long to compute or ignore some of the previously mentioned pitfalls. 
+\label{sec:related}
 
-Ariadne's Clew Algorithm \cite{bessiere93} approximated configuration-space by sampling. It used an explore-search approch to achieve
-resolution completeness and was respectably fast for most problems. Algorithms based on probabilistic roadmaps, deriving from
-\cite{amato96}, used the sampling idea to pre-process a roadmap for multi-query problems which allowed subsequent path planning problems to
-be solved efficiently. Because the preprocessing step takes on the order of minutes, it is not appropriate for our stated goal of a single
-query planner for general environments. The Rapidly-Exploring Random Tree (RRT) was introduced by \cite{lavalle00}, \cite{lavalle98} as an
-efficient resolution-complete sampling based algorithm. In recent years, this algorithm has been extremely popoular and effective in solving
-many high dimensional planning problems.
+Achieving tractable, complete motion planning for high dimensional 
+systems such as (redundant) manipulators in general work environments
+present several challenges. Algorithms to resolve the high-dimensional aspect 
+have been the first to arise.  One of the most famous and most cited
+approaches is the Artificial Potential Field Method originally presented in
+\cite{khatib86}. Although this method is fast enough to be used in a single
+query planner, it depends on obstacles being of a simple geometry and
+suffers from several fundamental issues such as getting stuck in local
+minima, no passage between closely spaced obstacles, and oscillations in
+certain conditions \cite{koren91}.  Attempts have been made to solve these
+issues by the formulation of new potential functions \cite{connolly90,ge00},
+however, these functions either take prohibitively long to compute or do not
+resolve all of the aforementioned pitfalls. 
 
-Standard RRTs depend on a start and a goal given in configuration space. This allows for a bidirectional algorithm, also presented in
-\cite{lavalle00}, which is effective in solving single bug-trap problems. This is accomplished by growing two trees - sometimes randomly,
-sometimes toward each other. Since goals are most often not specified in configuration space for manipulation problems, much research has
-been dedicated to finding inverse kinematics algorithms to transform the goal into configuration space. Some of the most famous ones are
-given in \cite{goldenberg85}, \cite{guez88}, \cite{chang87}, \cite{parker89}. None of these algorithms are complete and guaranteed to be
-reachable from the start configuration. An inverse kinematics approach that was guaranteed to return a configuration reachable from start
-was presented in \cite{ahuactzin99}. We compare the results of this algorithm to our own in Section~\ref{sec:evaluation}. 
+Ariadne's Clew Algorithm \cite{bessiere93} approximates the feasible 
+joint space via sampling. It uses an explore-search approach to achieve
+resolution completeness and was shown to be respectably fast for most problems.
+Algorithms based on probabilistic roadmaps \cite{amato96} use sampling 
+to generate a roadmap for multi-query problems which allows subsequent
+path planning problems to be solved efficiently.  Because the roadmap 
+pre-processing step has a baseline overhead, it is not optimal for our stated 
+goal of a single query planner for general environments.  Within the
+category of efficient resolution-complete sampling based algorithms, the
+Rapidly-Exploring Random Tree (RRT) family is popular and effective at solving 
+many high dimensional planning problems \cite{lavalle98,lavalle00} 
+For manipulation, standard RRTs depend on start and goal states given in joint 
+space.  This bidirectional version \cite{lavalle00}, which grows two trees 
+(sometimes randomly, sometimes toward each other), is effective in solving 
+bug-trap problems. 
+Since goals are most often not specified in joint space for manipulation
+problems, a method for finding inverse kinematics algorithms to transform
+the goal state into joint space is first needed
+\cite{chang87,goldenberg85,guez88,parker89}. 
+None of these inversion algorithms are complete and guaranteed to be
+reachable from the start configuration. An inverse kinematics approach that
+was guaranteed to return a configuration reachable from start was presented
+in \cite{ahuactzin99}. 
 
-The other approach to the inverse kinematics problem is to incorporate it into the planning search. This allows the inverse kinematics to be
-resolution complete and guaranteed reachable from the start. The first paper to use this approach was \cite{bertram06}, which biased the RRT
-search to be around the nodes already added which were closest in end-effector space to goal. Significant speed improvements were achieved
-by \cite{vande07} and \cite{vahrenkamp09} in this approach by using the Jacobian transpose and Jacobian pseudo-inverse respectively to take
-steps in the direction of the goal from the existing tree. This approach, however, is very susceptible to getting stuck when the goal is
-occluded by an obstacle. Finally, \cite{diankov08} and \cite{yao05} improved on the idea by growing an end-effector space tree and using
-this tree to bias the growth of the configuration-space tree.  \cite{diankov08} grew the end-effector space stree from the goal in a
-bidirectional type approach whereas \cite{yao05} made end effector paths from start to goal. This approach too struggles to find solutions
-quickly in bug-trap problems.
+When the planning problem incorporates also the inverse kinematics problem
+as part of it, then the inverse kinematics solution will be resolution
+complete and guaranteed reachable from the start. In \cite{bertram06}, the
+RRT search is biased to be around the existing nodes which were closest in 
+end-effector space to goal.  Significant speed improvements to the biased
+search were achieved by using the Jacobian transpose or Jacobian 
+pseudo-inverse to take steps in the direction of the goal from existing
+nodes \cite{vahrenkamp09,vande07}.  Including such a bias is susceptible to 
+getting stuck when the goal is occluded by an obstacle (similar to a
+bug-trap).  Other RRT modifications include growing an additional
+end-effector space tree which is then used to guide the growth of the
+joint space tree \cite{diankov08,yao05}.  The former, \cite{diankov08},
+grows the end-effector space tree from the goal in a bidirectional-type 
+approach whereas the latter, \cite{yao05}, creates end-effector paths from 
+start to goal. The latter approach struggles to find solutions quickly in 
+bug-trap problems.
  
 \section{RRT and the Bug-Trap Problem}
 \label{sec:bugtraprrt}
 
 \begin{figure}[h!]
   \centering
-    \includegraphics[width=0.5\textwidth]{figures/BugTrapRRT.pdf}
-  \caption{An RRT attempting a bug trap problem. \label{fig:BugTrapRRT} }
+    \includegraphics[width=0.4\textwidth]{figures/BugTrapRRT.pdf}
+  \caption{An RRT attempting a bug-trap problem. \label{fig:BugTrapRRT} }
 \end{figure}
 
-Figure~\ref{fig:BugTrapRRT} shows an example of a single style RRT attempting to solve a problem where the goal is occluded by an object.
-The state of the RRT is shown after 12 iterations of the extend operation. In this case, the probability of taking a step to goal was
-35\%. At this state we can see that two problems emerge in our quest to connect the tree to the goal node:
+Figure~\ref{fig:BugTrapRRT} shows an example of a uni-directional RRT 
+attempting to solve a problem where the goal is occluded by an object.  The
+state of the RRT is shown after 12 iterations of the extend operation (with
+the probability of taking a step to goal was 35\%). At this state of the
+tree, we can see that two problems emerge in our quest to connect the tree 
+to the goal node:
 \begin{enumerate}
 \item Future attempts to step to goal will be taken from the red node since it is closest. All these attempts will fail because there is an
-obstacle in the way. Obviously, these attempts are a waste of time.
-\item To actually get to the goal, the RRT will have to find its way into the yellow semicircle around the goal by virtue of only random
-steps. Any nodes outside of this area will be either further than the red node or obstructed by the obstacle. The probability of this
-happening quickly is very low. Essentially, it would require that random configurations to extend toward constantly be in the bottom right
-corner of the workspace. In this case, the probability of getting such random configurations looks to be around 1/15. In a different
-scenario with a larger workspace and smaller step size, this probability would be much smaller. 
+obstacle in the way, and are a waste of time.
+\item To get to the goal, the RRT will have to find its way into the yellow
+semicircle around the goal by virtue of only random steps. Any nodes outside
+of this area will be either further than the red node or obstructed by the
+obstacle. The probability of this happening quickly is very low.
+Essentially, it would require that random configurations to extend toward
+constantly be in the bottom right
+corner of the workspace. For this simple example, the probability of getting
+such random configurations looks to be around 1/15. In a different scenario
+with a larger workspace and smaller step size, the probability would be
+much smaller. 
 \end{enumerate}
 
-Some may argue that this problem occurs because the RRT is too greedy - that if the probability of stepping to goal was smaller, we would be
-able to avoid the obstacle. This is not really the case. We can practically throw out the probability that the RRT will reach the goal
-randomly, so we still need the tree to extend where a goal step would be useful. This is again a low probaility proposition if the goal is
-near the edge of the workspace and occluded by an obstacle. Moreover, less greedy RRTs naturally take longer to converge to goal in simpler
-cases. In our opinion, the important takeaway is that fast RRTs generally tend to approach the goal in a very directed fashion.
+The important takeaway is that fast RRTs tend to approach the goal in a very 
+directed fashion, but will be blocked by bug-trap type situations.  
+Traditional RRTs rely on diffusion through random walks to go around
+obstacles, but this process is slow for low probability situations.
 
 \section{Forage RRT Implementation}
 \label{sec:implementation}
-The Forage RRT is based on a similar concept to the Ariadne's Clew Algorithm \cite{bessiere93} in that there are two repeating phases to the
-algorithm - explore and search. However, in the Forage RRT, the explore phase is the extension of a coarse step-size RRT and the search phase
-is an attempt to connect a node from the coarse step-size tree to the goal via a fine step-size RRT. The relationship to foraging is that
-there's a combination of exploring a large space to find leads and the closer investigation of these leads. The effect of this approach for
-bug-trap type problems is to solve the problem presented in Section~\ref{sec:bugtraprrt} by using the coarse step-size RRT to find
-promising approach directions to the goal and then using the fine step-size RRT to avoid any small occlusions that remain on the path to the
-goal.
+
+The Forage-RRT algorithm, described in this section, utilizes ideas
+from the biological foraging literature where it is shown that a
+multi-diffusion rate process lowers the mean time to passage for foraging
+problems \CITE.  The foraging problem is the problem of finding a reward
+that has low probability of occurence in a large space (with a penalty
+imposed on
+movement and searching).  The foraging process model is a search process
+that has two diffusion rates (high and low), that result in two modes of
+search, or at least two distinct movement types\footnote{Some researchers
+prefer to use a single, heavy-tailed distribution to generate the two
+movement types \CITE} (far and near, respectively).  By alternating between
+the two, search for an unknown goal state in a large search space is faster
+than traditional diffusion-based search, and covers a larger region versus
+greedy searches.  Each movement mode is also characterized as having a
+specific cost: low for the high diffusion rate (far mode) and high for low
+diffusion rate (near mode).  These costs are typically associated to the
+attention or energy given to search versus movement. 
+
+Forage-RRT replicates this idea within the context of our problem
+statement.  The high diffusion rate mode utilizes a coarse step-size RRT
+algorithm, with low probability of seeking the goal, and is akin to 
+an exploration phase.  The low diffusion rate mode attempts to connect a node 
+from the coarse tree to the goal via a fine step-size RRT algorithm with a
+high probability of greedily seeking the goal.  The two RRTs have parameters
+chosen to replicate the low/high attention characteristics found in
+foraging.  The RRT in the fine-step/high-attention is more guided to the 
+goal and will also more often use the manipulator Jacobian to move.  The
+effect of this approach for bug-trap type problems is to solve the problem
+presented in Section~\ref{sec:bugtraprrt} by using the coarse step-size tree
+to cover joint space in search of promising approach directions to the goal,
+then using the fine step-size tree to avoid any small occlusions that remain
+on the path to the goal.
 
 \subsection{Goal Heap}
-One of the inherent inefficiencies in the basic RRT algorithm is that unsuccessful steps to goal may continuously be taken from the same
-node because that node is the closest to goal. The problem is illustrated in Section~\ref{sec:bugtraprrt}, Figure~\ref{fig:BugTrapRRT},
-where steps to goal from the red node are doomed to fail indefinitely. In RRT implementations for static environments, it is unnecessary and
-inefficient to continue to attempt steps to goal from nodes from which such a step has already been attempted - if it did not reach goal
-before, it will not again. 
+An inefficiency in the basic RRT algorithm is that unsuccessful steps to
+goal may continuously be taken from the same node because that node is the
+closest to goal, as illustrated in \S\ref{sec:bugtraprrt}.
+In RRT implementations for static environments, it is unnecessary and
+inefficient to continue to attempt steps to goal from nodes from which such
+a step has already been attempted - if it did not reach goal before, it will
+not again.  Our solution to the problem is to implement a Goal Heap. 
+When new nodes are added to the RRT, they are also added to the goal heap
+along with their value (some heuristic that evaluates the fitness of the
+joint state with regards to proximity to goal). In our case, the value of a
+node was simply the inverse of its Euclidean distance to goal position. The
+heap data structure automatically orders the nodes by value so that the top
+of the heap is the highest value node. Once a step to goal is attempted from
+a node, that node is removed from the Goal Heap because using it again for a
+step to goal would be a fruitless endeavor.  While the Goal Heap can apply
+to any RRT implementation, it is essential for the Forage RRT because the
+heap provides a node in the coarse tree for use when attempting a fine 
+step-size J+RRT to connect to goal.
 
-Our solution to the problem is to implement a Goal Heap. When new nodes are added to an RRT, they are also added to the goal heap along
-with their value. In our case, the value of a node was simply the inverse of its distance to goal. The heap data structure automatically
-orders the nodes by value so that the top of the heap is the highest value node. Once a step to goal is attempted from a node, that node is
-removed from the Goal Heap because using it again for a step to goal would be a fruitless endeavor.
+\subsection{RRT Extend Implementations}
+Both coarse and fine RRT implementations use the J+RRT algorithm 
+\cite{vahrenkamp09} with the proposed Goal Heap augmentation (J+RRT+GH).  
+Random extensions of the search tree use the
+standard extension procedure of picking a random point in joint space and
+taking a step towards it from the nearest neighbor already in the tree. 
+Goal-directed extensions use the Moore-Penrose pseudo-inverse Jacobian to 
+take a step in the proper direction.  The overall extend implementation is 
+shown in Algorithm~\ref{alg:extend}. 
 
-Although we recommend using a Goal Heap for any RRT implementation to improve efficiency, it is essential for the Forage RRT because it is
-used to decide which node in the coarse step-size RRT should be used to attempt a fine step-size RRT to connect to goal.
+\paragraph{Coarse versus fine search.}
+The coarse search should focus more on rapidly exploring the space rather
+than seeking the goal.  This is done by lowering the probability of moving
+to goal in the coarse J+RRT+GH implementation, which also lowers the
+exploration cost.  Since the coarse J+RRT+GH takes large step sizes, for each
+node extension, the link between the new node and its parent must be checked 
+for validity by iterating through its length at an acceptable resolution and 
+making sure each smaller step is valid.  In contrst, the fine search should 
+focus on exploring a small region with a greater intent to find the final
+goal state.  The fine J+RRT implementation has a higher probability of moving 
+to goal.  For the fine step-size J+RRT+GH we assume that if the new node is
+valid, then the path connecting the parent node to the new node is also valid. 
 
-\subsection{RRT Extend Implementation}
-For random extensions of the search tree, we use the standard extension procedure of picking a random point in configuration space and
-taking a step towards it from the nearest neighbor already in the tree. For extensions toward the goal, we use the Moore-Penrose
-pseudo-inverse Jacobian to take a step in the proper direction. This approach is described in \cite{vahrenkamp09}. The overall extend
-implementation is shown in Algorithm~\ref{alg:extend}. When implementing this algorithm, one should take good care to make sure that nodes
-added to the tree are not only valid configurations themselves but that the link between the new node and its parent is valid. In a fine
-step-size RRT this is trivial because we can assume that if the new node is valid, the link too is valid. However, for a coarse step-size
-RRT this assumption cannot be made. Instead, the link must be checked by iterating through its length at an acceptable resolution and making
-sure each step is also valid.
 \begin{algorithm}
- \label{alg:extend}
- \SetAlgoLined
- \KwData{$RRT, goal, StepSize$}
- \KwResult{$Updated RRT, StepResult$}
- \eIf{$randomNumber(0,100) < randomExtendProbability$}{
-	$x_{randConfig} \leftarrow RANDOM\_STATE()$\;
-	$x_{near} \leftarrow NEAREST\_NEIGHBOR(randConfig, RRT)$\;
-	$x_{new} \leftarrow COMPUTE\_NEW\_STATE(x_{randConfig}, x_{near}, stepsize)$\;
-	\eIf{$isLegalState(x_{new})$}{
-		$RRT \leftarrow addVertex(x_{new})$\;
-		$RRT \leftarrow addEdge(x_{near}, x_{new}, StepSize)$\;
-		$NodeValue \leftarrow value(x_{new})$\;
-		$GoalHeap \leftarrow insert(x_{new}, NodeValue)$\;
-		\eIf{$x_{new} = x_{randomConfig}$}{
-			$return \; STEP\_REACHED$\;
-		}{
-			$return \; STEP\_PROGRESS$\;
-		}
-	}{
-		$return \; STEP\_COLLISION$\;
-	}	
-  }{	
-	$x_{near} \leftarrow GoalHeap \rightarrow top$\;
-	$x_{new} \leftarrow takeJacobianStep(x_{near}, goal, StepSize)$\;
-	\eIf{$isLegalState(x_{new})$}{
-		$RRT \leftarrow addVertex(x_{new})$\;
-                $RRT \leftarrow addEdge(x_{near}, x_{new}, StepSize)$\;
-		\eIf{$x_{new} = goal$}{
-                        $return \; GOAL\_REACHED$\;
-                }{
-			$NodeValue \leftarrow value(x_{new})$\;
-	                $GoalHeap \leftarrow insert(x_{new}, NodeValue)$\;
-			$GoalHeap \leftarrow remove(x_{near})$\;
-                        $return \; STEP\_PROGRESS$\;
-                }	
-	}{
-		$GoalHeap \leftarrow remove(x_{near})$\;
-		$return \; STEP\_COLLISION$\;
-	}
- }
-\caption{RRT Extend Operation}
+  \label{alg:extend}
+  \SetAlgoLined
+  \KwData{$RRT, goal, StepSize$}
+  \KwResult{$Updated RRT, StepResult$} 
+
+  $\rho \leftarrow random([0,100])$\;
+  \eIf{$\rho < randomExtendProbability$}
+   {
+    $x_{rand} \leftarrow RANDOM\_STATE()$\;
+    $x_{near} \leftarrow NEAREST\_NODE(x_{rand}, RRT)$\;
+    $x_{new} \leftarrow TAKE\_STEP(x_{rand}, x_{near}, StepSize)$\;
+    \eIf{$isLegalPath(x_{near},x_{new})$}
+	 {
+      $RRT \leftarrow addVertex(x_{new})$\;
+      $RRT \leftarrow addEdge(x_{near}, x_{new}, StepSize)$\;
+      $NodeValue \leftarrow value(x_{new})$\;
+      $GoalHeap \leftarrow insert(x_{new}, NodeValue)$\;
+      \eIf{$x_{new} = x_{randomConfig}$}
+	   {
+        $return \; STEP\_REACHED$\;
+       }{
+        $return \; STEP\_PROGRESS$\;
+       }
+     }{
+       $return \; STEP\_COLLISION$\;
+     }	
+   }{	
+    $x_{near} \leftarrow GoalHeap \rightarrow top$\;
+    $x_{new} \leftarrow JAC\_STEP(x_{near}, goal, StepSize)$\;
+    \eIf{$isLegalPath(x_{near},x_{new})$}
+	 {
+      $RRT \leftarrow addVertex(x_{new})$\;
+      $RRT \leftarrow addEdge(x_{near}, x_{new}, StepSize)$\;
+      \eIf{$x_{new} = goal$}
+	   {
+        $return \; GOAL\_REACHED$\;
+       }{
+        $NodeValue \leftarrow value(x_{new})$\;
+        $GoalHeap \leftarrow insert(x_{new}, NodeValue)$\;
+        $GoalHeap \leftarrow remove(x_{near})$\;
+        $return \; STEP\_PROGRESS$\;
+       }	
+     }{
+       $GoalHeap \leftarrow remove(x_{near})$\;
+       $return \; STEP\_COLLISION$\;
+     }
+   }
+  \caption{J+RRT+GH Extend Operation}
 \end{algorithm}
 
 \subsection{Explore/Search}
-The main Forage RRT algorithm is shown in Algorithm~\ref{alg:ForageRRT}. The purpose of the first while loop is to effectively explore the
-space and build up several promising nodes to start the fine step-size RRT from. The second while loop attempts to connect the promising
-nodes from the coarse step-size RRT to the goal with a fine step-size RRT. Once a fine step-size RRT has endured a certain number of
-collisions, we give up on it and try to start another one from the next most promising node. Once a certain number of the fine step-size
-RRTs fail, we grow our coarse step-size RRT some more to replenish some promising start nodes. This constant giving up and restarting from
-promising nodes allows us to make the fine step-size RRT greedy, making it fast in easy situations but also robust to be able to handle
-harder situations. A full list of parameters we used is given in Section~\ref{sec:evaluation}.
+The main Forage RRT algorithm is shown in Algorithm~\ref{alg:ForageRRT}. The
+first while loop initially explores the space and builds up several promising 
+nodes to initialize the fine searches with. The second while loop attempts to 
+connect the promising nodes from the coarse step-size tree to the goal with a 
+fine step-size tree. Once a fine step-size RRT experiences a certain number 
+of collisions, we give up on it and try to start another one from the next 
+most promising node. Once a certain number of the fine step-size searches fail, 
+we further grow the coarse step-size tree to replenish the heap with promising 
+start nodes. This constant giving up and restarting from alternative promising 
+nodes allows us to make the fine step-size RRT greedy, making it fast in easy 
+situations but also robust to more challenging situations. A full list of
+parameters we used is given in Section~\ref{sec:evaluation}.
 
-Note that once the fine step-size RRT has reached the goal, we can trace back from this node through its parents to the coarse step-size RRT
-node that created it and then continue tracing back to the root of the coarse step-size RRT to make our final plan. 
-
-Finally, it is important to note that because of the mixed step size RRTs, the raw final plan will not be attractive, especially near the
-start. For this purpose, smoothing is required to make the path acceptable. This is done in a quick manner by taking pairs of nodes,
-attempting to connect them with a straight line, and deleting all nodes in between if successful. We have found in this case that the
-best way to pick pairs of nodes to attempt to connect is by taking one from the coarse section and the other from the fine section.  The
-second step is to go through remaining coarse steps and subdivide them into the desired step size to match the rest of the path.
-Empirically, 15-20 pairs of attempted connections makes for a smooth path. 
+Once the fine step-size RRT has reached the goal, the found path is obtained
+by tracing to the root of the fine step-size tree, which is a node in the
+coar step-size tree, then tracing to the root of the coarse step-size tree.
+Due to the mixed step-size RRTs, the raw final plan will not be attractive, 
+especially near the start. For this purpose, path smoothing is required to 
+make the path acceptable. This is done in a quick manner by taking pairs of
+nodes, attempting to connect them with a straight line, and deleting all
+nodes in between if successful. Empirically, we have found that
+picking a node from the coarse step-size plan and trying to connect it to 
+the fine step-size plan works well.  The second step is to go through
+remaining coarse steps and subdivide them into the desired step size to
+match the rest of the path.  We have found that 15-20 successful smoothing 
+steps result in a smooth path.  The computational cost for path smoothing is
+low compared to the path planning procedure.
 
 \begin{algorithm}
- \label{alg:ForageRRT}
- \SetAlgoLined
- \KwData{start, goal}
- \KwResult{path from start to goal}
-	$CoarseRRT \leftarrow INITIALIZE(largeStepSize, start, goal)$\;
-	\While{$CoarseRRT \rightarrow size < initialSize$}{
+  \label{alg:ForageRRT}
+  \SetAlgoLined
+  \KwData{start, goal}
+  \KwResult{path from start to goal}
+  $CoarseRRT \leftarrow INIT(largeStepSize, start, goal)$\;
+  \While{$CoarseRRT \rightarrow size < initialSize$}
+   {
+	$CoarseRRT \rightarrow EXTEND()$\;
+   }
+  \While{$result \neq GOAL\_REACHED$}
+   {
+    $numFailures \leftarrow 0$\;
+	$FineRRT \leftarrow INIT(fineStepSize, 
+	                         CoarseRRT \rightarrow GoalHeap \rightarrow top)$\;
+	\While{$numCollisions < maxNumCollisions$}
+	 {
+	  $FineRRT \rightarrow EXTEND()$\;
+	 }
+	increment $numFailures$ \;
+	\If{numFailures = maxNumFailures}
+	 {
+	  \For{1:percentIncrease*initialSize}
+	   {
 		$CoarseRRT \rightarrow EXTEND()$\;
-	}
-	\While{$result \neq GOAL\_REACHED$}{
-		$FineRRT \leftarrow INITIALIZE(fineStepSize, CoarseRRT \rightarrow GoalHeap \rightarrow top)$\;
-		\While{$numCollisions < maxNumCollisions$}{
-			$FineRRT \rightarrow EXTEND()$\;
-		}
-		increment numFailures \;
-		\If{numFailures = maxNumFailures}{
-			\For{1:percentIncrease*initialSize}{
-				$CoarseRRT \rightarrow EXTEND()$\;
-			}
-		}
-	}
-\caption{Forage RRT}
+	   }
+	 }
+   }
+  \caption{Forage-RRT}
 \end{algorithm}
 
 \subsection{Parallel Implementation}
-The separate nature of the Forage RRT search and explore functions make it an ideal candidate for parallel implementation. We used a
-Master-Worker approach to the parallel implementation which is described here:
+The two search strategies in Forage-RRT are parellelizable.
+Using a Master-Worker parallel implementation, the main steps are:
 \begin{itemize}
-\item \textbf{Initial Step: } Grow coarse step-sze RRT to an initial size greater than the number of threads to be used.
-\item \textbf{Worker Threads: } Attempt to connect fine step-size RRT to goal when seeded with start configuration from coarse step-size
-RRT. Terminate when a certain number of collisions occurs.
-\item \textbf{Master Thread: } 1) Grow coarse step-size RRT 2) Maintain worker threads by seeding them with the best available node from
-coarse step-size RRT when they terminate without success.
+  \item \textbf{Initial Step: } 
+	Grow coarse step-size tree to an initial size greater than the number of
+	threads to be used.
+  \item \textbf{Worker Threads: } 
+	Grow a fine step-size tree to goal with a seeded start configuration from 
+	the coarse step-size tree. Terminate upon success or when a certain 
+	number of collisions occur.
+  \item \textbf{Master Thread: } 
+    1) Grow coarse step-size RRT; 
+	2) Maintain worker threads by seeding them with the best available node 
+	  from coarse step-size RRT when they terminate without success.
 \end{itemize}
 
 \section{Experiments and Evaluation}
 \label{sec:evaluation}
 \subsection{Experiments}
 \subsubsection{Sequential Implementation}
-Experiments were conducted on a Schunk 7 DOF arm with the DART/GRIP simulator, developed by the GOLEMS lab at Georgia Tech, on a 2.27GHz, 8
-core machine. We compared the following algorithms to the smoothed Forage RRT:
+Experiments were conducted on a Schunk 7 DOF arm with the DART/GRIP
+simulator (developed by the GOLEMS lab at Georgia Tech) on a 2.27GHz, 8 core
+machine. We compared the following algorithms to the path-smoothed Forage-RRT:
 \begin{enumerate}
-	\item RRT-JT \cite{vande07}
-	\item J+RRT \cite{vahrenkamp09}
-	      goal directed steps
-	\item BiSpace RRT \cite{diankov08}
-	\item Kinematic Roadmap \cite{ahuactzin99}: note that the paths produced from this algorithm would be too long to be used for most
-	      applications but rather only the inverse kinematics, which is guaranteed to be reachable from start would be used.
+  \item RRT-JT \cite{vande07}
+  \item J+RRT with goal directed steps \cite{vahrenkamp09} 
+  \item BiSpace RRT \cite{diankov08}
+  \item Kinematic Roadmap \cite{ahuactzin99}. The paths produced 
+    from this algorithm would be too long to be used for most applications. 
+	Rather only the inverse kinematics solution, which is guaranteed to be 
+	reachable from start, would be used.
 \end{enumerate}
-
-It is worth noting that smoothing time was included in Forage RRT results but no other results because the paths produced did not strictly
-require it for those cases. Moreover, each RRT was restarted after 10,000 nodes to reduce average planning time of all planners.
-
-Each algorithm was tested on an easy, medium, and hard case, shown in in Figure 2. In each figure, the goal is the point where
-the three shown faces of the yellow and blue cube meet. 50 random collision-free start configurations were computed for each case (easy,
-medium, and hard) and the same 50 start configurations were used for each algorithm. Each start configuration was the seed for 40 runs, thus
-totaling 2000 runs per algorithm per case. In the interest of time, a run was considered a failure if the RRT had to be restarted 25 times
-and no solution was found. At that point, the run would have taken 400-600 seconds so each failure should be considered a strong penalty. 
 
 \begin{figure*}[t]
   \centering
-    \subfigure[Easy case for testing: no obstacles.]
-     	{\includegraphics[width=0.29\textwidth]{figures/EasyCase.png}}
-    \subfigure[Medium case for testing: obstacles throughout space.]
-        {\includegraphics[width=0.29\textwidth]{figures/MediumCase.png}}
-    \subfigure[Hard case for testing: goal directly under obstacle, near edge of workspace ]
-    	{\includegraphics[width=0.29\textwidth]{figures/HardCase.png}}
-    \caption{Depiction of different test cases.}
+  \subfigure[Easy case for testing: no obstacles.]
+   	{\includegraphics[width=0.29\textwidth]{figures/EasyCase.png}}
+  \subfigure[Medium case for testing: obstacles throughout space.]
+    {\includegraphics[width=0.29\textwidth]{figures/MediumCase.png}}
+  \subfigure[Hard case for testing: goal directly under obstacle, near edge of workspace ]
+   	{\includegraphics[width=0.29\textwidth]{figures/HardCase.png}}
+  \caption{Depiction of different test cases.}
   \label{fig:cases}
 \end{figure*}
 
-The Forage RRT parameters used for testing are given in Table~\ref{tab:ForageParams}.
+The smoothing time was included in Forage RRT results but not for the other 
+results because the paths produced did not strictly require it. Moreover,
+any RRT reaching 10,000 nodes was restarted to improve the average planning
+time of all planners (empirically it seems that an RRT that grows too large
+will have trouble connecting to the goal, so it is better to restart).
+The Forage-RRT parameters used for testing are given in
+Table~\ref{tab:ForageParams} (with common parameters for the other
+algorithms equaling those from the table).
+
+Each algorithm was tested on an easy, medium, and hard case. Figure 
+(\ref{fig:cases}) depicts the cases.  The goal is the point where the three 
+shown faces of the gold and blue cube meet. 50 random collision-free start 
+configurations were computed for each case (easy, medium, and hard) and the 
+same 50 start configurations were used for each algorithm. Each start 
+configuration was the seed for 40 runs, thus totaling 2000 runs per
+algorithm per case. In the interest of time, a run was considered a failure
+if the RRT had to be restarted 25 times and no solution was found (such
+a run would have taken 400-600 seconds so it should be penalized). 
 
 \begin{table}
-	\centering
-	\begin{tabular}{| c | c | }
-        	\hline
-		initialSize & 50 \\ \hline
-  		randomExtendProbability - coarse & 90 \\ \hline
-  		randomExtendProbability - fine & 65 \\ \hline
-  		largeStepSize & 1.3\\ \hline
-  		fineStepSize & .02\\ \hline
-  		maxNumCollisions & 5\\ \hline
-  		maxNumFailures & 10\\ \hline
-		percentIncrease & .25\\ \hline 
-	\end{tabular}
-	\caption{Forage RRT parameters.} 
-	\label{tab:ForageParams}
+  \centering
+  \caption{Forage RRT parameters. \label{tab:ForageParams}}
+  \begin{tabular}{| c | c | }
+    \hline
+	initialSize & 50 \\ \hline
+  	randomExtendProbability - coarse & 90 \\ \hline
+  	randomExtendProbability - fine & 65 \\ \hline
+  	largeStepSize & 1.3\\ \hline
+  	fineStepSize & .02\\ \hline
+  	maxNumCollisions & 5\\ \hline
+  	maxNumFailures & 10\\ \hline
+	percentIncrease & .25\\ \hline 
+  \end{tabular}
 \end{table}
 
 \subsubsection{Parallel Implementation}
-To understand the properties of the parallel algorithm, experiments were conducted on the same cases as the sequential Forage RRT. The
-parallel implementations were tested for 10 precomputed start configurations per case, at 40 runs per start configuration. Thus, each
-version was tested 400 times. The implementation was tested with 1,2,3,4,5, and 6 worker threads. The results were simulated using the
-DART/GRIP simulator and run on a 2.27GHz, 8 core machine.
+To test the parallel algorithm, experiments were conducted on the same cases
+as the sequential Forage-RRT. The parallel implementations were tested for
+10 precomputed start configurations per case, at 40 runs per start
+configuration. Thus, each version was tested 400 times. The implementation
+was tested with one to six worker threads. 
 
 \subsection{Evaluation}
-For the purpose of visualization, an example of the end effector positions of the coarse RRT are shown in in Figure~\ref{fig:CoarseRRT}.
-It's evident to see that the closest nodes to goal come from many different directions, making the fine RRTs more likely to be effective.
-The green node is the start and the red node is the goal.
-
-\begin{figure}[h!]
-  \centering
-    \includegraphics[width=0.5\textwidth]{figures/coarseRRTExample.png}
-  \caption{End effector positions for the initial coarse RRT. \label{fig:CoarseRRT} }
-\end{figure}
-
 
 \subsubsection{Sequential Implementation}
-The results of the sequential implementation simulation are shown in Table~\ref{tab:Results}. The reported times are averaged over completed
-cases only. Failures are runs that took 400-600 seconds and did not find a solution so should be taken as a strong negative penalty to the
-algorithm.
+The results of the sequential implementation simulation are shown in 
+Table~\ref{tab:Results}. The reported times are averaged over completed
+cases only.  For all cases, the Forage-RRT provided the lowest average
+completion time and also maintained a 100\% completion rate for the tasks.
 
 \begin{table*}
-        \centering
-        \begin{tabular}{| c | c | c | c | c | c | c | }
-		\hline
-                Algorithm & \textbf{Easy Avg} & \textbf{\% Comp} &\textbf{Med Avg} & \textbf{\% Comp} & \textbf{Hard Avg} & \textbf{\% Comp}\\  \hline
-                \textbf{Forage RRT}&\textbf{2.92}&\textbf{100}&\textbf{3.01}&\textbf{100}&\textbf{7.52}&\textbf{100}\\ \hline
-                \textbf{RRT-JT}&12.12&93.7&30.51&82.7&62.62&29.0\\ \hline
-                \textbf{Jinv-RRT}&4.45&96.9&21.42&92.0&65.92&53.6\\ \hline
-		\textbf{BiSpace RRT}&4.57&100&21.94&99.96&36.87&80.6\\ \hline
-   		\textbf{Kin. Roadmap}&5.22&100&4.72&100&22.21&100\\ \hline
-        \end{tabular}
-        \caption{Sequential experiment results. All times in seconds.}
-        \label{tab:Results}
+  \caption{Sequential experiment results. All times in seconds. 
+    \label{tab:Results}}
+  \centering
+  \begin{tabular}{| c | c | c | c | c | c | c | }
+  \hline
+  Algorithm & \textbf{Easy Avg} & \textbf{\% Comp} &\textbf{Med Avg} & 
+             \textbf{\% Comp} & \textbf{Hard Avg} & \textbf{\% Comp} \\ \hline
+  \textbf{Forage RRT}&
+  \textbf{2.92}&\textbf{100}&\textbf{3.01}&\textbf{100}&\textbf{7.52}&
+  \textbf{100}\\ \hline
+  \textbf{RRT-JT}& 12.12&93.7&30.51&82.7&62.62&29.0\\ \hline
+  \textbf{Jinv-RRT}&4.45&96.9&21.42&92.0&65.92&53.6\\ \hline
+  \textbf{BiSpace RRT}&4.57&100&21.94&99.96&36.87&80.6\\ \hline
+  \textbf{Kin. Roadmap}&5.22&100&4.72&100&22.21&100\\ \hline
+\end{tabular}
 \end{table*}
 
 \subsubsection{Parallel Implementation}
-The results of the parallel implementation are shown for different numbers of extra worker threads in Figure~\ref{fig:ParallelResults}. The
-results show a decline in average planning time when using the parallel implementation. The decline is not linear but neither should we
-expect it to be. Because the solution is often found in the first few attempts to connect to goal from the coarse RRT, extra threads working
-on other start points are not going to be helpful. A decline in performance is seen with 5 and 6 worker threads. We suspect this is because
-the threads start interfering with each other. Even though the machine we used for testing has 8 cores, some of them are used partially for
-other processes running on the machine. In any case, the results imply that improvements after 4 working threads would be minimal. The best
-average planning times achieved with the parallel implementation are summarized in Table~\ref{tab:BestParallel} and apply to the case when 4
-worker threads were implemented.
+The results of the parallel implementation for the tested number
+worker threads are shown in Figure~\ref{fig:ParallelResults}. 
+The decline in search time is sub-linear.  Because the solution is often 
+found in the first few attempts to connect to goal from the coarse RRT, we
+hypothesize that additional threads beyond a certain amount will initiate a 
+fine search that will not be needed.
+For our experiments, the results imply that improvements after four working 
+threads would be minimal. The best average planning times achieved with the 
+parallel implementation are summarized in Table~\ref{tab:BestParallel} and 
+apply to the case when four worker threads were implemented.
 
 \begin{figure}[h!]
   \centering
-    \includegraphics[width=0.5\textwidth]{figures/ParallelGraph.pdf}
-  \caption{Average planning times per number of extra cores used. \label{fig:ParallelResults} }
+    \includegraphics[width=0.45\textwidth]{figures/ParallelGraph.pdf}
+  \caption{Average planning times per number of extra cores used. 
+    \label{fig:ParallelResults} }
 \end{figure}
 
 \begin{table}
-        \centering
-        \begin{tabular}{| c | c | }
-                \hline
-                Case & \textbf{Av. Planning Time} \\  \hline
-                Easy & .69 \\  \hline
-		Medium & 1.00 \\  \hline
-		Hard & 2.59 \\  \hline
-		Average &\textbf{1.43} \\  \hline
-        \end{tabular}
-        \caption{Parallel (4 core) results. All times in seconds.}
-        \label{tab:BestParallel}
+  \centering
+  \caption{Parallel (4 core) planning results. All times in seconds.
+    \label{tab:BestParallel}}
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    Case: & easy & Medium & Hard & Average \\
+	\hline
+	Avg. Time: & .69 & 1.00 & 2.59 & \textbf{1.43} \\  \hline
+  \end{tabular}
 \end{table}
 
-
-
 \section{Discussion}
+The benefits of the Forage-RRT arise from the two different diffusion rates
+associated to the two RRT implementations.  For the purpose of visualization, 
+the end-effector positions of a sample, initial coarse RRT are shown in 
+Figure~\ref{fig:CoarseRRT}.  
+The green node is the start and the red node is the goal.
+The closest nodes to the goal come from many different directions, making
+the fine RRTs more likely to be effective.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.35\textwidth]{figures/coarseRRTExample.png}
+  \caption{End-effector positions for an initial coarse RRT. 
+    \label{fig:CoarseRRT} }
+\end{figure}
+
+\label{sec:disc}
 \subsection{Completeness}
-As shown in \cite{lavalle98}, any RRT is resolution complete because its coverage of the workspace converges to the sampling distribution.
-Because the coarse RRT in the Forage RRT algorithm searches indefinitely, the Forage RRT is also resolution complete. Needless to say, it is
-highly unlikely in practice that the coarse RRT will be the one to come upon the goal.
+From \cite{lavalle98}, any RRT is resolution complete because its
+coverage of the workspace converges to the sampling distribution.  Because
+the coarse RRT in the Forage-RRT algorithm searches indefinitely, the 
+Forage-RRT is also resolution complete. Needless to say, it is highly
+unlikely in practice that the coarse step-size tree will be the one to come
+upon the goal.
 
 \subsection{Parameters}
-The Forage RRT parameters used to achieve the results in Table~\ref{tab:Results} are given in Table~\ref{tab:ForageParams}. These parameters
-were arrived at empirically and by no means are guaranteed to be ideal ones. It may be of interest to investigate ideal values for these
-parameters, for instance when to switch from fine searching to coarse searching. In theory, it could be based on some function instead of a
-hard number of failures. Moreover, parameters such as initial coarse tree size and coarse tree step size may be good candidates for learning
-over time. It is quite possible that the ideal values for these parameters depend on specific environment factors such as the volume of the
-workspace. The Forage RRT algorithm presented in Section~\ref{sec:implementation} should be a very strong base line for any motion planning
-environment, especially one for a manipulator, but improvements could foreseeably be made to make it more adaptible to any environment.
+The Forage RRT parameters used to achieve the results in
+Table~\ref{tab:Results} are given in Table~\ref{tab:ForageParams}. These
+parameters were arrived at empirically by running a few test cases, 
+and are not guaranteed to be ideal ones. It may be of interest to
+investigate ideal values for these parameters, for instance when to switch
+from fine searching to coarse searching. Perhaps there should be a
+heuristic function rather than a hard constraint on failures. Moreover, 
+parameters such as initial coarse tree size and the coarse step-size may be 
+good candidates for learning over time. We conjecture that the ideal
+values for these parameters depend on specific environment factors such as
+the obstacle density and obstacle geometry. 
+%The Forage-RRT algorithm
+%presented in Section~\ref{sec:implementation} should be a very strong base
+%line for any motion planning environment, especially one for a manipulator,
+%but improvements could foreseeably be made to make it more adaptible to any
+%environment.
 
-\subsection{Replanning}
-In situations where the environment has changed but the start and goal have not, the Forage RRT lends itself to possible future work in
-replanning strategies. For instance, it may be faster to modify the parts of the coarse tree affected by the environment changes than to
-rebuild the whole tree. Another idea may be to reuse the coarse node which was a successful start for the fine RRT in the previous run as a
-waypoint in the search to bias the tree toward an area which is likely to be successful again.
+%\subsection{Replanning}
+%In situations where the environment has changed but the start and goal have
+%not, the Forage RRT lends itself to possible future work in replanning
+%strategies. For instance, it may be faster to modify the parts of the coarse
+%tree affected by the environment changes than to rebuild the whole tree from
+%scratch.  Another idea may be to reuse the coarse node which was a
+%successful start for the fine RRT in the previous run as a waypoint in the
+%search to bias the tree toward an area which is likely to be successful
+%again.  
 
 \section{Conclusion}
-We have presented the Forage RRT algorithm for motion planning. We believe the algorithm's efficieny on tough problems, consistency,
-completeness, ease of implementation, and parallel potetial make it the best available motion planning algorithm for general
-problems where the goal is specified in task space. We have shown its effectiveness specifically for redundant manipulators.
+We have presented the Forage-RRT algorithm for motion planning. The premise
+behind the algorithm is that a foraging-based search algorithm provides an 
+excellent compromise between diffusion-based searching (via random samples) 
+and greedy search (goal-directed movements) in single-query, task-based, 
+manipulator planning algorithms.  The effectiveness of the method has been
+shown through randomized trials on scenarios with variable difficulty.
 
-\bibliographystyle{plain}
+%We believe the algorithm's efficieny on tough problems, consistency,
+%completeness, ease of implementation, and parallel potetial make it the best
+%available motion planning algorithm for general problems where the goal is
+%specified in task space. We have shown its effectiveness specifically for
+%redundant manipulators.
+
+\paragraph{Acknowledgments:} This work was supported in part by the National
+Science Foundation (ECS-0238993).
+
+\bibliographystyle{IEEEtran}
 \bibliography{RRT,MotionPlanning,IK}
 
 \end{document}
