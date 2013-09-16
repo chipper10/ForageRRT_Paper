@@ -1,13 +1,14 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.6.27)  15 SEP 2013 13:10
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2013.8.4)  16 SEP 2013 00:05
 entering extended mode
- restricted \write18 enabled.
- %&-line parsing enabled.
 **ForageRRT.tex
 (./ForageRRT.tex
-LaTeX2e <2011/06/27>
-Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, lo
-aded.
-(/usr/share/texlive/texmf-dist/tex/latex/IEEEtran/IEEEtran.cls
+LaTeX2e <2003/12/01>
+Babel <v3.8d> and hyphenation patterns for american, french, german, ngerman, b
+ahasa, basque, bulgarian, catalan, croatian, czech, danish, dutch, esperanto, e
+stonian, finnish, greek, icelandic, irish, italian, latin, magyar, norsk, polis
+h, portuges, romanian, russian, serbian, slovak, slovene, spanish, swedish, tur
+kish, ukrainian, nohyphenation, loaded.
+(/home/pvela/tex/texmf/journals/IEEEtran/IEEEtran.cls
 Document Class: IEEEtran 2007/03/05 V1.7a by Michael Shell
 -- See the "IEEEtran_HOWTO" manual for usage information.
 -- http://www.michaelshell.org/tex/ieeetran/
@@ -18,7 +19,7 @@ Document Class: IEEEtran 2007/03/05 V1.7a by Michael Shell
 \@IEEEtrantmptoksA=\toks14
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 366.
 
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+(/usr/share/texmf/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 -- Using 8.5in x 11in (letter) paper.
@@ -91,50 +92,43 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24> not available
 \@IEEEtmpitemindent=\dimen116
 \c@IEEEbiography=\count90
 \@IEEEtranrubishbin=\box26
-) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+) (/usr/share/texmf/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+(/usr/share/texmf/tex/latex/graphics/keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks15
 )
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+(/usr/share/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+(/usr/share/texmf/tex/latex/graphics/trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/graphics.cfg
-File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+(/usr/share/texmf/tex/latex/graphics/graphics.cfg
+File: graphics.cfg 2005/02/03 v1.3 graphics configuration of teTeX/TeXLive
 )
-Package graphics Info: Driver file: pdftex.def on input line 91.
+Package graphics Info: Driver file: pdftex.def on input line 80.
 
-(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
-Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
-)
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
-)
+(/usr/share/texmf/tex/latex/graphics/pdftex.def
+File: pdftex.def 2002/06/19 v0.03k graphics/color for pdftex
 \Gread@gobject=\count91
 ))
 \Gin@req@height=\dimen117
 \Gin@req@width=\dimen118
 )
-(/usr/share/texlive/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
+(/home/pvela/tex/texmf/algorithm2e.sty
 Package: algorithm2e 2008/00/00 v3.10 algorithms environments
 \c@AlgoLine=\count92
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+(/usr/share/texmf/tex/latex/base/ifthen.sty
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
-(/usr/share/texlive/texmf-dist/tex/latex/tools/xspace.sty
-Package: xspace 2009/10/20 v1.13 Space after command names (DPC,MH)
+(/usr/share/texmf/tex/latex/tools/xspace.sty
+Package: xspace 1997/10/13 v1.06 Space after command names (DPC)
 )
-(/usr/share/texmf/tex/latex/Others/relsize.sty
-Package: relsize 2013/03/29 ver 4.1
+(/usr/share/texmf/tex/latex/relsize/relsize.sty
+Package: relsize 2003/07/04 ver 3.1
 )
 ********************************************************
 Package `algorithm2e' Release 4.01 -- december 14 2009 --
@@ -173,8 +167,8 @@ subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
 \c@algocf=\count95
 \algocf@algoframe=\box32
 \algocf@algobox=\box33
-) (/usr/share/texlive/texmf-dist/tex/latex/subfigure/subfigure.sty
-Package: subfigure 2002/03/15 v2.1.5 subfigure package
+) (/usr/share/texmf/tex/latex/subfigure/subfigure.sty
+Package: subfigure 2002/07/30 v2.1.4 subfigure package
 \subfigtopskip=\skip58
 \subfigcapskip=\skip59
 \subfigcaptopadj=\dimen125
@@ -189,11 +183,10 @@ Package: subfigure 2002/03/15 v2.1.5 subfigure package
 ****************************************
 * Local config file subfigure.cfg used *
 ****************************************
-(/usr/share/texlive/texmf-dist/tex/latex/subfigure/subfigure.cfg)
+(/usr/share/texmf/tex/latex/subfigure/subfigure.cfg)
 \subfig@top=\skip62
 \subfig@bottom=\skip63
-)
-(./ForageRRT.aux)
+) (./ForageRRT.aux)
 \openout1 = `ForageRRT.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -208,153 +201,113 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
- (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count100
+
+(/usr/share/texmf/tex/context/base/supp-pdf.tex
+(/usr/share/texmf/tex/context/base/supp-mis.tex
+loading : Context Support Macros / Miscellaneous (2004.10.26)
+\protectiondepth=\count100
+\scratchcounter=\count101
+\scratchtoks=\toks16
 \scratchdimen=\dimen127
+\scratchskip=\skip64
+\scratchmuskip=\muskip10
 \scratchbox=\box34
-\nofMPsegments=\count101
-\nofMParguments=\count102
-\everyMPshowfont=\toks16
-\MPscratchCnt=\count103
-\MPscratchDim=\dimen128
-\MPnumerator=\count104
-\makeMPintoPDFobject=\count105
-\everyMPtoPDFconversion=\toks17
-) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
-Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+\scratchread=\read1
+\scratchwrite=\write3
+\zeropoint=\dimen128
+\onepoint=\dimen129
+\onebasepoint=\dimen130
+\minusone=\count102
+\thousandpoint=\dimen131
+\onerealpoint=\dimen132
+\emptytoks=\toks17
+\nextbox=\box35
+\nextdepth=\dimen133
+\everyline=\toks18
+\!!counta=\count103
+\!!countb=\count104
+\recursecounter=\count105
 )
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
-Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
+loading : Context Support Macros / PDF (2004.03.26)
+\nofMPsegments=\count106
+\nofMParguments=\count107
+\MPscratchCnt=\count108
+\MPscratchDim=\dimen134
+\MPnumerator=\count109
+\everyMPtoPDFconversion=\toks19
 )
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
-)
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-)
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
-
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
-Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
-))
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
-Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
-Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
-Package etexcmds Info: Could not find \expanded.
-(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
-(etexcmds)             that some package has redefined \expanded.
-(etexcmds)             In the latter case, load this package earlier.
-)))
-Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 452.
-
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 53.
+(Font)              <7> on input line 55.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 53.
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 78.
-
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
+(Font)              <5> on input line 55.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 80.
+ (/usr/share/texmf/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 78.
- [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 80.
+ [1{/usr/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
-<figures/BugTrapRRT.pdf, id=14, 796.9775pt x 597.23125pt>
+<figures/BugTrapRRT.pdf, id=29, 796.9775pt x 597.23125pt>
 File: figures/BugTrapRRT.pdf Graphic file (type pdf)
 
 <use figures/BugTrapRRT.pdf>
-Package pdftex.def Info: figures/BugTrapRRT.pdf used on input line 188.
-(pdftex.def)             Requested size: 206.39685pt x 154.66588pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 231.
+(Font)              <8> on input line 232.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 231.
- [2 <./figures/BugTrapRRT.pdf>] [3]
-Underfull \hbox (badness 2245) in paragraph at lines 431--435
+(Font)              <6> on input line 232.
+ [2 <./figures/BugTrapRRT.pdf
+Warning: pdflatex (file ./figures/BugTrapRRT.pdf): pdf inclusion: Page Group de
+tected which pdfTeX can't handle. Ignoring it.
+>] [3]
+Underfull \hbox (badness 2245) in paragraph at lines 434--438
  \OT1/ptm/m/it/10 1) Se-quen-tial Im-ple-men-ta-tion: [][] \OT1/ptm/m/n/10 Ex-p
 er-i-ments were con-
  []
 
-<figures/EasyCase.png, id=32, 1019.81pt x 737.75626pt>
+<figures/EasyCase.png, id=47, 1019.81pt x 737.75626pt>
 File: figures/EasyCase.png Graphic file (type png)
 
 <use figures/EasyCase.png>
-Package pdftex.def Info: figures/EasyCase.png used on input line 447.
-(pdftex.def)             Requested size: 149.63654pt x 108.2496pt.
-
-<figures/MediumCase.png, id=33, 1019.81pt x 737.75626pt>
+<figures/MediumCase.png, id=48, 1019.81pt x 737.75626pt>
 File: figures/MediumCase.png Graphic file (type png)
 
 <use figures/MediumCase.png>
-Package pdftex.def Info: figures/MediumCase.png used on input line 449.
-(pdftex.def)             Requested size: 149.63654pt x 108.2496pt.
-
-Underfull \hbox (badness 7030) in paragraph at lines 449--449
+Underfull \hbox (badness 7030) in paragraph at lines 452--452
 []\OT1/ptm/m/n/8 (b) Medium case for test-ing: ob-sta-cles
  []
 
-<figures/HardCase.png, id=34, 1019.81pt x 737.75626pt>
+<figures/HardCase.png, id=49, 1019.81pt x 737.75626pt>
 File: figures/HardCase.png Graphic file (type png)
 
-<use figures/HardCase.png>
-Package pdftex.def Info: figures/HardCase.png used on input line 451.
-(pdftex.def)             Requested size: 149.63654pt x 108.2496pt.
- [4]
-<figures/ParallelGraph.pdf, id=39, 796.9775pt x 597.23125pt>
+<use figures/HardCase.png> [4]
+<figures/ParallelGraph.pdf, id=56, 796.9775pt x 597.23125pt>
 File: figures/ParallelGraph.pdf Graphic file (type pdf)
 
 <use figures/ParallelGraph.pdf>
-Package pdftex.def Info: figures/ParallelGraph.pdf used on input line 538.
-(pdftex.def)             Requested size: 232.19843pt x 174.00368pt.
-
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<figures/coarseRRTExample.png, id=40, 440.64626pt x 253.94875pt>
+<figures/coarseRRTExample.png, id=57, 440.64626pt x 253.94875pt>
 File: figures/coarseRRTExample.png Graphic file (type png)
 
 <use figures/coarseRRTExample.png>
-Package pdftex.def Info: figures/coarseRRTExample.png used on input line 566.
-(pdftex.def)             Requested size: 180.60315pt x 104.0809pt.
-
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [5 <./figures/EasyCase.png> <./figures/MediumCase.png> <./figures/HardCase.png>
- <./figures/ParallelGraph.pdf>] (./ForageRRT.bbl
+ <./figures/ParallelGraph.pdf
+Warning: pdflatex (file ./figures/ParallelGraph.pdf): pdf inclusion: Page Group
+ detected which pdfTeX can't handle. Ignoring it.
+>] (./ForageRRT.bbl
 Missing character: There is no ‚ in font ptmr7t!
 Missing character: There is no Ä in font ptmr7t!
 Missing character: There is no ú in font ptmr7t!
 Missing character: There is no ‚ in font ptmr7t!
 Missing character: There is no Ä in font ptmr7t!
 Missing character: There is no ù in font ptmr7t!
-Missing character: There is no – in font ptmr7t!
-Missing character: There is no ¶ in font ptmr7t!
 )
 
 ** Conference Paper **
@@ -367,29 +320,25 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[6 <./figures/coarseRRTExample.png (PNG copy)>] (./ForageRRT.aux) ) 
+[6 <./figures/coarseRRTExample.png>] (./ForageRRT.aux) ) 
 Here is how much of TeX's memory you used:
- 3580 strings out of 495059
- 53667 string characters out of 3182030
- 136527 words of memory out of 3000000
- 6726 multiletter control sequences out of 15000+200000
- 42567 words of font info for 76 fonts, out of 3000000 for 9000
- 14 hyphenation exceptions out of 8191
- 38i,18n,24p,245b,345s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/
-texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
-blic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/urw/times/utmri8a.pfb>
-Output written on ForageRRT.pdf (6 pages, 448362 bytes).
+ 2974 strings out of 94500
+ 42705 string characters out of 1176767
+ 115897 words of memory out of 1000000
+ 6143 multiletter control sequences out of 10000+50000
+ 42567 words of font info for 76 fonts, out of 500000 for 2000
+ 580 hyphenation exceptions out of 1000
+ 26i,18n,24p,225b,345s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 91 PDF objects out of 1000 (max. 8388607)
- 58 compressed objects within 1 object stream
- 0 named destinations out of 1000 (max. 500000)
- 31 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 77 PDF objects out of 300000
+ 0 named destinations out of 131072
+ 31 words of extra memory for PDF output out of 65536
+</usr/share/texmf/fonts
+/type1/bluesky/cm/cmsy7.pfb>{/usr/share/texmf/fonts/enc/dvips/psnfss/8r.enc}</u
+sr/share/texmf/fonts/type1/urw/times/utmri8a.pfb></usr/share/texmf/fonts/type1/
+bluesky/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/
+share/texmf/fonts/type1/bluesky/cm/cmmi7.pfb></usr/share/texmf/fonts/type1/blue
+sky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/urw/times/utmb8a.pfb></usr/shar
+e/texmf/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf/fonts/type1/urw/tim
+es/utmr8a.pfb>
+Output written on ForageRRT.pdf (6 pages, 427676 bytes).

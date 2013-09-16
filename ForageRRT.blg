@@ -1,51 +1,56 @@
-This is BibTeX, Version 0.99d (TeX Live 2012/Debian)
-Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+This is BibTeX, Version 0.99c (Web2C 7.5.4)
 The top-level auxiliary file: ForageRRT.aux
-The style file: plain.bst
+The style file: IEEEtran.bst
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Database file #1: RRT.bib
 Database file #2: MotionPlanning.bib
 Database file #3: IK.bib
-Warning--empty journal in lavalle98
+-- IEEEtran.bst version 1.10 (2002/09/27) by Michael Shell.
+-- http://www.ctan.org/tex-archive/macros/latex/contrib/supported/IEEEtran/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
 Warning--empty journal in lavalle00
-You've used 18 entries,
-            2118 wiz_defined-function locations,
-            606 strings with 7500 characters,
-and the built_in function-call counts, 7611 in all, are:
-= -- 810
-> -- 286
-< -- 12
-+ -- 118
-- -- 94
-* -- 485
-:= -- 1142
-add.period$ -- 64
-call.type$ -- 18
-change.case$ -- 101
-chr.to.int$ -- 0
-cite$ -- 20
-duplicate$ -- 327
-empty$ -- 611
-format.name$ -- 94
-if$ -- 1699
+Warning--empty journal in lavalle98
+
+Done.
+You've used 21 entries,
+            3975 wiz_defined-function locations,
+            914 strings with 10194 characters,
+and the built_in function-call counts, 17158 in all, are:
+= -- 1371
+> -- 366
+< -- 169
++ -- 212
+- -- 53
+* -- 803
+:= -- 2459
+add.period$ -- 42
+call.type$ -- 21
+change.case$ -- 20
+chr.to.int$ -- 411
+cite$ -- 23
+duplicate$ -- 1206
+empty$ -- 1427
+format.name$ -- 70
+if$ -- 4007
 int.to.chr$ -- 0
-int.to.str$ -- 18
-missing$ -- 18
-newline$ -- 93
-num.names$ -- 36
-pop$ -- 121
+int.to.str$ -- 21
+missing$ -- 191
+newline$ -- 83
+num.names$ -- 21
+pop$ -- 445
 preamble$ -- 1
-purify$ -- 83
-quote$ -- 0
-skip$ -- 263
+purify$ -- 0
+quote$ -- 2
+skip$ -- 1377
 stack$ -- 0
-substring$ -- 577
-swap$ -- 130
-text.length$ -- 12
+substring$ -- 991
+swap$ -- 1003
+text.length$ -- 32
 text.prefix$ -- 0
-top$ -- 0
-type$ -- 72
+top$ -- 5
+type$ -- 0
 warning$ -- 2
-while$ -- 76
-width$ -- 20
-write$ -- 208
+while$ -- 85
+width$ -- 23
+write$ -- 216
 (There were 2 warnings)

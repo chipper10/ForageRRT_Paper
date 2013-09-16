@@ -1,118 +1,125 @@
 \begin{thebibliography}{10}
+\providecommand{\url}[1]{#1}
+\def\UrlFont{\rmfamily}
+\providecommand{\newblock}{\relax}
+\providecommand{\bibinfo}[2]{#2}
+\providecommand\BIBentrySTDinterwordspacing{\spaceskip=0pt\relax}
+\providecommand\BIBentryALTinterwordstretchfactor{4}
+\providecommand\BIBentryALTinterwordspacing{\spaceskip=\fontdimen2\font plus
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
+  \fontdimen4\font\relax}
+\providecommand\BIBforeignlanguage[2]{{%
+\expandafter\ifx\csname l@#1\endcsname\relax
+\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
+\typeout{** loaded for the language `#1'. Using the pattern for}%
+\typeout{** the default language instead.}%
+\else
+\language=\csname l@#1\endcsname
+\fi
+#2}}
 
-\bibitem{ahuactzin99}
-J~Manuel Ahuactzin and Kamal~K Gupta.
-\newblock The kinematic roadmap: A motion planning based global approach for
-  inverse kinematics of redundant robots.
-\newblock {\em Robotics and Automation, IEEE Transactions on}, 15(4):653--669,
-  1999.
-
-\bibitem{amato96}
-Nancy~M Amato and Yan Wu.
-\newblock A randomized roadmap method for path and manipulation planning.
-\newblock In {\em Robotics and Automation, 1996. Proceedings., 1996 IEEE
-  International Conference on}, volume~1, pages 113--120. IEEE, 1996.
-
-\bibitem{bertram06}
-Dominik Bertram, James Kuffner, Ruediger Dillmann, and Tamim Asfour.
-\newblock An integrated approach to inverse kinematics and path planning for
-  redundant manipulators.
-\newblock In {\em Robotics and Automation, 2006. ICRA 2006. Proceedings 2006
-  IEEE International Conference on}, pages 1874--1879. IEEE, 2006.
-
-\bibitem{bessiere93}
-Pierre Bessiere, J-M Ahuactzin, E-G Talbi, and Emmanuel Mazer.
-\newblock The “ariadne's clew” algorithm: global planning with local
-  methods.
-\newblock In {\em Intelligent Robots and Systems' 93, IROS'93. Proceedings of
-  the 1993 IEEE/RSJ International Conference on}, volume~2, pages 1373--1380.
-  IEEE, 1993.
-
-\bibitem{chang87}
-Pyung Chang.
-\newblock A closed-form solution for inverse kinematics of robot manipulators
-  with redundancy.
-\newblock {\em Robotics and Automation, IEEE Journal of}, 3(5):393--403, 1987.
-
-\bibitem{connolly90}
-Christopher~I Connolly, JB~Burns, and R~Weiss.
-\newblock Path planning using laplace's equation.
-\newblock In {\em Robotics and Automation, 1990. Proceedings., 1990 IEEE
-  International Conference on}, pages 2102--2106. IEEE, 1990.
-
-\bibitem{diankov08}
-Rosen Diankov, Nathan Ratliff, Dave Ferguson, Siddhartha Srinivasa, and James
-  Kuffner.
-\newblock Bispace planning: Concurrent multi-space exploration.
-\newblock {\em Proceedings of Robotics: Science and Systems IV}, 63, 2008.
-
-\bibitem{ge00}
-Shuzhi~Sam Ge and Yan~Juan Cui.
-\newblock New potential functions for mobile robot path planning.
-\newblock {\em Robotics and Automation, IEEE Transactions on}, 16(5):615--620,
-  2000.
-
-\bibitem{goldenberg85}
-Andrew Goldenberg, B~Benhabib, and Robert Fenton.
-\newblock A complete generalized solution to the inverse kinematics of robots.
-\newblock {\em Robotics and Automation, IEEE Journal of}, 1(1):14--20, 1985.
-
-\bibitem{guez88}
-Allon Guez and Ziauddin Ahmad.
-\newblock Solution to the inverse kinematics problem in robotics by neural
-  networks.
-\newblock In {\em Neural Networks, 1988., IEEE International Conference on},
-  pages 617--624. IEEE, 1988.
+\bibitem{lavalle00}
+S.~LaValle and J.~Kuffner~Jr., ``Rapidly-exploring random trees: Progress and
+  prospects,'' 2000.
 
 \bibitem{khatib86}
-Oussama Khatib.
-\newblock Real-time obstacle avoidance for manipulators and mobile robots.
-\newblock {\em The international journal of robotics research}, 5(1):90--98,
+O.~Khatib, ``Real-time obstacle avoidance for manipulators and mobile robots,''
+  \emph{International Journal of Robotics Research}, vol.~5, no.~1, pp. 90--98,
   1986.
 
 \bibitem{koren91}
-Yoram Koren and Johann Borenstein.
-\newblock Potential field methods and their inherent limitations for mobile
-  robot navigation.
-\newblock In {\em Robotics and Automation, 1991. Proceedings., 1991 IEEE
-  International Conference on}, pages 1398--1404. IEEE, 1991.
+Y.~Koren and J.~Borenstein, ``Potential field methods and their inherent
+  limitations for mobile robot navigation,'' in \emph{IEEE International
+  Conference on Robotics and Automation}, 1991, pp. 1398--1404.
+
+\bibitem{connolly90}
+C.~Connolly, J.~Burns, and R.~Weiss, ``Path planning using {L}aplace's
+  equation,'' in \emph{IEEE International Conference on Robotics and
+  Automation}, 1990, pp. 2102--2106.
+
+\bibitem{ge00}
+S.~Ge and Y.~Cui, ``New potential functions for mobile robot path planning,''
+  \emph{IEEE Transactions on Robotics and Automation}, vol.~16, no.~5, pp.
+  615--620, 2000.
+
+\bibitem{bessiere93}
+P.~Bessiere, J.~Ahuactzin, and E.~Talbi, E.G.and~Mazer, ``The “{A}riadne's
+  clew” algorithm: global planning with local methods,'' in \emph{IEEE/RSJ
+  International Conference on Intelligent Robots and Systems}, vol.~2, 1993,
+  pp. 1373--1380.
+
+\bibitem{amato96}
+N.~M. Amato and Y.~Wu, ``A randomized roadmap method for path and manipulation
+  planning,'' in \emph{IEEE International Conference on Robotics and
+  Automation}, vol.~1, 1996, pp. 113--120.
 
 \bibitem{lavalle98}
-Steven~M LaValle.
-\newblock Rapidly-exploring random trees a Цew tool for path planning.
-\newblock 1998.
+S.~LaValle, ``Rapidly-exploring random trees a new tool for path planning,''
+  1998.
 
-\bibitem{lavalle00}
-Steven~M LaValle and James~J Kuffner~Jr.
-\newblock Rapidly-exploring random trees: Progress and prospects.
-\newblock 2000.
+\bibitem{chang87}
+P.~Chang, ``A closed-form solution for inverse kinematics of robot manipulators
+  with redundancy,'' \emph{IEEE Journal of Robotics and Automation}, vol.~3,
+  no.~5, pp. 393--403, 1987.
+
+\bibitem{goldenberg85}
+A.~Goldenberg, B.~Benhabib, and R.~Fenton, ``A complete generalized solution to
+  the inverse kinematics of robots,'' \emph{IEEE Journal of Robotics and
+  Automation}, vol.~1, no.~1, pp. 14--20, 1985.
+
+\bibitem{guez88}
+A.~Guez and Z.~Ahmad, ``Solution to the inverse kinematics problem in robotics
+  by neural networks,'' in \emph{IEEE International Conference on Neural
+  Networks}, 1988, pp. 617--624.
 
 \bibitem{parker89}
-Joey~K Parker, Ahmad~R Khoogar, and David~E Goldberg.
-\newblock Inverse kinematics of redundant robots using genetic algorithms.
-\newblock In {\em Robotics and Automation, 1989. Proceedings., 1989 IEEE
-  International Conference on}, pages 271--276. IEEE, 1989.
+J.~Parker, A.~Khoogar, and D.~Goldberg, ``Inverse kinematics of redundant
+  robots using genetic algorithms,'' in \emph{IEEE International Conference on
+  Robotics and Automation}, 1989, pp. 271--276.
+
+\bibitem{ahuactzin99}
+J.~Ahuactzin and K.~Gupta, ``The kinematic roadmap: A motion planning based
+  global approach for inverse kinematics of redundant robots,'' \emph{IEEE
+  Transactions on Robotics and Automation}, vol.~15, no.~4, pp. 653--669, 1999.
+
+\bibitem{bertram06}
+D.~Bertram, J.~Kuffner, R.~Dillmann, and T.~Asfour, ``An integrated approach to
+  inverse kinematics and path planning for redundant manipulators,'' in
+  \emph{IEEE International Conference on Robotics and Automation}, 2006, pp.
+  1874--1879.
 
 \bibitem{vahrenkamp09}
-Niko Vahrenkamp, Dmitry Berenson, Tamim Asfour, James Kuffner, and R{\"u}diger
-  Dillmann.
-\newblock Humanoid motion planning for dual-arm manipulation and re-grasping
-  tasks.
-\newblock In {\em Intelligent Robots and Systems, 2009. IROS 2009. IEEE/RSJ
-  International Conference on}, pages 2464--2470. IEEE, 2009.
+N.~Vahrenkamp, D.~Berenson, T.~Asfour, J.~Kuffner, and R.~Dillmann, ``Humanoid
+  motion planning for dual-arm manipulation and re-grasping tasks,'' in
+  \emph{IEEE/RSJ International Conference on Intelligent Robots and Systems},
+  2009, pp. 2464--2470.
 
 \bibitem{vande07}
-M~Vande~Weghe, Dave Ferguson, and Siddhartha~S Srinivasa.
-\newblock Randomized path planning for redundant manipulators without inverse
-  kinematics.
-\newblock In {\em Humanoid Robots, 2007 7th IEEE-RAS International Conference
-  on}, pages 477--482. IEEE, 2007.
+M.~Vande~Weghe, D.~Ferguson, and S.~Srinivasa, ``Randomized path planning for
+  redundant manipulators without inverse kinematics,'' in \emph{IEEE-RAS
+  International Conferenceon Humanoid Robots}, 2007, pp. 477--482.
+
+\bibitem{diankov08}
+R.~Diankov, N.~Ratliff, D.~Ferguson, S.~Srinivasa, and J.~Kuffner, ``Bispace
+  planning: Concurrent multi-space exploration,'' in \emph{Proceedings of
+  Robotics: Science and Systems}, vol.~63, 2008.
 
 \bibitem{yao05}
-Zhenwang Yao and Kamal Gupta.
-\newblock Path planning with general end-effector constraints: Using task space
-  to guide configuration space search.
-\newblock In {\em Intelligent Robots and Systems, 2005.(IROS 2005). 2005
-  IEEE/RSJ International Conference on}, pages 1875--1880. IEEE, 2005.
+Z.~Yao and K.~Gupta, ``Path planning with general end-effector constraints:
+  Using task space to guide configuration space search,'' in \emph{IEEE/RSJ
+  International Conference on Intelligent Robots and Systems}, 2005, pp.
+  1875--1880.
+
+\bibitem{Passino[2005]}
+K.~M. Passino, \emph{Biomimicry for Optimization, Control, and
+  Automation}.\hskip 1em plus 0.5em minus 0.4em\relax Springer, 2005.
+
+\bibitem{MoEtAl_JSM[2009]}
+M.~Moreau, O.~B\'{e}nichou, C.~Loverdo, and R.~Voituriez, ``Chance and strategy
+  in search processes,'' \emph{J. Stat. Mech.}, p. P12006, 2009.
+
+\bibitem{PlJa_JRSI[2008]}
+M.~Plank and A.~James, ``Optimal foraging: L\'{e}vy pattern or process?''
+  \emph{J. R. Soc. Interface}, vol.~5, no.~26, pp. 1077--1086, 2008.
 
 \end{thebibliography}

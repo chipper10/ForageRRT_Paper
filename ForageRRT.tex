@@ -11,8 +11,10 @@
 \author{%
   Leo Keselman\\ School of ECE\\ Georgia Institute of Technology\\
     L.D.Keselman@gmail.com \and
-  Patricio Vela\\ School of ECE\\ Georgia Institute of Technology\\
-    pvela@ece.gatech.edu
+  Erik Verriest \\ School of ECE\\ Georgia Institute of Technology\\
+    erik.verriest@ece.gatech.edu \and
+  Patricio A. Vela\\ School of ECE\\ Georgia Institute of Technology\\
+    pvela@ece.gatech.edu 
 }
 \maketitle
 
@@ -73,8 +75,8 @@ which is complete, fast, and returns a configuration guaranteed to be
 reachable from the start configuration.  Were it to exist, then the
 task-space planning problem would be converted into a joint-space planning
 problem with task-space obstacle constraints.  An efficient solution would
-then be the Bidirectional RRT \CITE, which is in the class of
-Rapidly-Exploring Random Tree (RRT) algorithms \CITE, or any other solution
+then be the bidirectional RRT \cite{lavalle00}, which is in the class of
+Rapidly-Exploring Random Tree (RRT) algorithms, or any other solution
 known to be fast (see \S \ref{sec:related}).
 
 \paragraph{Problem Statement}
@@ -221,20 +223,20 @@ obstacles, but this process is slow for low probability situations.
 The Forage-RRT algorithm, described in this section, utilizes ideas
 from the biological foraging literature where it is shown that a
 multi-diffusion rate process lowers the mean time to passage for foraging
-problems \CITE.  The foraging problem is the problem of finding a reward
-that has low probability of occurence in a large space (with a penalty
-imposed on
-movement and searching).  The foraging process model is a search process
-that has two diffusion rates (high and low), that result in two modes of
-search, or at least two distinct movement types\footnote{Some researchers
-prefer to use a single, heavy-tailed distribution to generate the two
-movement types \CITE} (far and near, respectively).  By alternating between
-the two, search for an unknown goal state in a large search space is faster
-than traditional diffusion-based search, and covers a larger region versus
-greedy searches.  Each movement mode is also characterized as having a
-specific cost: low for the high diffusion rate (far mode) and high for low
-diffusion rate (near mode).  These costs are typically associated to the
-attention or energy given to search versus movement. 
+problems \cite{Passino[2005],MoEtAl_JSM[2009]}.  The foraging problem is the
+problem of finding a reward that has low probability of occurence in a large
+space (with a penalty imposed on movement and searching).  The foraging
+process model is a search process that has two diffusion rates (high and
+low), that result in two modes of search, or at least two distinct movement
+types\footnote{Some researchers prefer to use a single, heavy-tailed
+distribution to generate the two movement types \cite{PlJa_JRSI[2008]}} 
+(far and near, respectively).  By alternating between the two, search for an
+unknown goal state in a large search space is faster than traditional
+diffusion-based search, and covers a larger region versus greedy searches.
+Each movement mode is also characterized as having a specific cost: low for
+the high diffusion rate (far mode) and high for low diffusion rate (near
+mode).  These costs are typically associated to the attention or energy
+given to search versus movement. 
 
 Forage-RRT replicates this idea within the context of our problem
 statement.  The high diffusion rate mode utilizes a coarse step-size RRT
@@ -347,19 +349,20 @@ also valid.
   \caption{J+RRT+GH Extend Operation}
 \end{algorithm}
 
-\subsection{Explore/Search}
+\subsection{Foraging: Alternating Between Explore and Search}
 The main Forage RRT algorithm is shown in Algorithm~\ref{alg:ForageRRT}. The
 first while loop initially explores the space and builds up several promising 
-nodes to initialize the fine searches with. The second while loop attempts to 
-connect the promising nodes from the coarse step-size tree to the goal with a 
-fine step-size tree. Once a fine step-size RRT experiences a certain number 
-of collisions, we give up on it and try to start another one from the next 
-most promising node. After a given number of fine step-size searches fail, 
-we grow the coarse step-size tree to replenish the heap with promising 
-start nodes. The finite search cost and restarts from alternative promising
-nodes allows us to make the fine step-size RRT greedy, making it fast in
-easy situations but also robust to more challenging situations. A full list
-of parameters we used is given in Section~\ref{sec:evaluation}.
+nodes to initialize the fine searches with. The second while loop searches
+by attempting to connect the promising nodes from the coarse step-size tree
+to the goal with a fine step-size tree. Once a fine step-size RRT
+experiences a certain number of collisions, we give up on it and try to
+start another one from the next most promising node. After a given number of
+fine step-size searches fail, grow the coarse step-size tree (e.g.,
+return to explore mode) to replenish the heap with promising start nodes.
+The finite search cost and restarts from alternative promising nodes allows
+us to make the fine step-size RRT greedy, making it fast in easy situations
+but also robust to more challenging situations. A full list of parameters we
+used is given in Section~\ref{sec:evaluation}.
 
 Once the fine step-size RRT has reached the goal, the found path is obtained
 by tracing to the root of the fine step-size tree, which is a node in the
@@ -619,7 +622,7 @@ shown through randomized trials on scenarios with variable difficulty.
 %specified in task space. We have shown its effectiveness specifically for
 %redundant manipulators.
 
-\paragraph{Acknowledgments:} This work was supported in part by the National
+\paragraph{Acknowledgments} This work was supported in part by the National
 Science Foundation (ECS-0238993).
 
 \bibliographystyle{IEEEtran}
